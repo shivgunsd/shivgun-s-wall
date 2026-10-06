@@ -31,6 +31,10 @@ We load from this folder:
 library(skimr)
 library(mosaic)
 library(readr)
+library(ggformula) 
+##
+library(vcd) # (NEW!!) for Panel B
+library(broom) # (NEW!!) for clean stat outputs
 
 PanelA <- read.csv(file = "data/panel-A.csv")
 PanelB <- read.csv(file = "data/panel-B.csv")
@@ -113,24 +117,37 @@ One question *this* table can answer. One it cannot. Write both.
 Looking at the overall Spine statement, I can pose the following Questions:
 
 1. Which grade has the most students?
-2. What is the sex distribution among the grades?
+2. What is the gender distribution across the grades? 
 3. Do boys strength train more than girls?
 4. Do girls have better school night sleep than boys?
-5. Are heavier students more physically active?
+**5. Are heavier students more physically active, does it differ between boys and girls?**
+6. How does height differ between boys and girls?
+7. Does grade affect how physically active students are,and does it differ between boys and girls?
+8. Do heavier students (like me) tend to be in higher grades?
+9. Do older students sleep less on school nights, and does it differ between boys and girls?
+10.Do students who are more physically active also strength train more?
 
+Possibly cannot answer:
+1. Why do some students sleep less than 5 hours on school nights?
+2. Does the sleep depend on the professor's/teacher's class they have on the next day?
+3. Does their weight depend on the items served in mess/tiffins? 
 
 
 ### 3. Choose a mark
 
 Geom, map mark, or (later) test that matches the pair type. Name it before you code.
 
-histogram coloured by gender 
+Histogram
+Scatter Plot
+Box Plot
+Bar graph
+Density graph
 
 
 ### 4. Predict
 
 What do we think we will see? One sentence, before Run.
-the counts of boys who strength train might be higher.
+
 
 ### 5. Make
 
@@ -139,11 +156,15 @@ Human brick first. Optional: one AI prompt, pasted below, only for what section 
 1. Which grade has the most students??
 
 ```{r}
+#| eval: false
+#| echo: true
 A_mod %>% gf_bar (~ grade)
 ```
 2. What is the sex distribution among the grades?
 
 ```{r}
+#| eval: false
+#| echo: true
 A_mod %>% gf_bar(~grade, fill = ~gender)
 
 ```
@@ -153,10 +174,14 @@ A_mod %>% gf_bar(~grade, fill = ~gender)
 3. Do boys strength train more than girls?
 
 ```{r}
+#| eval: false
+#| echo: true
 A_mod %>% gf_histogram(~ strength_training_7d, fill = ~gender, bins = 1, position = "dodge")
 ```
 
 ```{r}
+#| eval: false
+#| echo: true
 A_mod %>% gf_density(~ strength_training_7d, fill = ~gender)
 ```
 
@@ -165,10 +190,12 @@ A_mod %>% gf_density(~ strength_training_7d, fill = ~gender)
 4. Do girls have better school night sleep than boys?
 
 ```{r}
+#| eval: false
+#| echo: true
 A_mod %>% gf_bar(~ gender, fill = ~school_night_hours_sleep)
 ```
 
-5. Are heavier students more physically active?
+**Are heavier students more physically active, does it differ between boys and girls?**
 
 ```{r}
 A_mod %>% 
@@ -177,24 +204,67 @@ A_mod %>%
   gf_point(weight ~ physically_active_7d, color= ~gender)
 ```
 
+6. How does height differ between boys and girls?
 
+```{r}
+#| eval: false
+#| echo: true
+A_mod %>% gf_histogram(~height, fill = ~gender)
 
-```r
-# human chunk
-
-# ## Prompt we actually used
-# ai_draft
-# ours
 ```
+```{r}
+#| eval: false
+#| echo: true
+A_mod %>% gf_density(~ height, fill = ~gender)
+```
+7. Does grade affect how physically active students are, and does it differ between boys and girls?
+
+```{r}
+#| eval: false
+#| echo: true
+A_mod %>%  filter(gender %in% c("male", "female")) %>% 
+  gf_boxplot( x = ~grade, y = ~physically_active_7d, fill = ~gender) 
+```
+8. Do heavier students (like me) tend to be in higher grades?
+
+```{r}
+#| eval: false
+#| echo: true
+A_mod %>% gf_boxplot( x = ~weight, y = ~grade)
+
+```
+
+9. Do older students sleep less on school nights, and does it differ between boys and girls?
+
+```{r}
+#| eval: false
+#| echo: true
+A_mod %>%  gf_boxplot(x = ~school_night_hours_sleep, y = ~age, fill = ~gender)
+```
+
+10. Do students who are more physically active also strength train more?
+
+```{r}
+#| eval: false
+#| echo: true
+A_mod %>% gf_point( strength_training_7d ~physically_active_7d)
+
+```
+
 
 
 ### 6. Say
 
-Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+**Weight tells us almost nothing about how many days a student is active.**
+
+Students at every activity level, 0 to 7 days a week, cover nearly the same range of weights, for both boys and girls.
+
+*Heavier students are not visibly more or less active than lighter ones.*
+
 
 ### 7. Limit
 
-What this panel cannot do. Which kit table we refused to abuse.
+This panel can't say anything about fitness or body composition, since weight alone isn't BMI. There is also missing data.
 
 
 # Panel B — category / talk
@@ -258,38 +328,65 @@ glimpse(B_mod)
 
 One question *this* table can answer. One it cannot. Write both.
 
+Looking at the overall Spine statement, I can pose the following Questions:
+
+1. Do boys or girls text while driving more?
+**2. Do boys or girls skip helmets more?**
+3. Are the students who text while driving older?
+
+Possibly cannot answer: 
+
+1. Why do some students never wear a helmet?
+2. Do students who text while driving have more crashes?
+
+
+
 
 ### 3. Choose a mark
 
 Geom, map mark, or (later) test that matches the pair type. Name it before you code.
 
-
+Bar Graph
+Box Plot
+Mosaic Charts
 
 
 ```{r}
+#| eval: false
+#| echo: true
 vcd::structable(grade ~ gender , data = B_mod) %>% vcd::mosaic()
 ```
 
 
 ```{r}
+#| eval: false
+#| echo: true
 vcd::structable(grade ~ gender , data = B_mod) %>% vcd::mosaic(type = "expected")
 ```
 ```{r}
+#| eval: false
+#| echo: true
 mosaic::xchisq.test(grade ~ gender, data = B_mod) 
 ```
 
 ```{r}
+#| eval: false
+#| echo: true
 vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic()
 
 ```
 
 ```{r}
+#| eval: false
+#| echo: true
 vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic(type = "expected")
 
 ```
 
 
 ```{r}
+#| eval: false
+#| echo: true
 mosaic::xchisq.test(gender ~ helmet_12m , data = B_mod) 
 ```
 
@@ -300,24 +397,47 @@ What do we think we will see? One sentence, before Run.
 
 ### 5. Make
 
-Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+1. Do boys or girls text while driving more?
 
-```r
-# human chunk
+```{r}
+#| eval: false
+#| echo: true
+#| 
+B_mod %>% gf_bar( ~text_while_driving_30d, fill = ~gender)
 
-# ## Prompt we actually used
-# ai_draft
-# ours
 ```
+**2. Do boys or girls skip helmets more?**
+
+```{r}
+B_mod %>% gf_bar( ~helmet_12m, fill = ~gender)
+
+```
+3. Are the students who text while driving older?
+
+```{r}
+#| eval: false
+#| echo: true
+
+B_mod %>% gf_boxplot( x = ~age, y =~text_while_driving_30d)
+
+```
+
+
 
 ### 6. Say
 
-Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+**Most students never wear a helmet, whether they are boys or girls.**
+
+Never" is the tallest bar by a wide margin, and both boys and girls make up a large part of it.
+
+Helmet use is rare among students of both genders.
+
 
 ### 7. Limit
 
-What this panel cannot do. Which kit table we refused to abuse.
+This panel shows how often students say they wear a helmet, not why they skip it. 
 
+The chart shows counts, not proportions, so not an exact boys versus girls comparison.
 
 # Panel C — place
 
