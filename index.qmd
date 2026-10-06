@@ -115,7 +115,8 @@ Looking at the overall Spine statement, I can pose the following Questions:
 
 1. Which grade has the most students?
 2. What is the sex distribution among the grades?
-2. Do boys strength train more than girls?
+3. Do boys strength train more than girls?
+4. Do girls have better school night sleep than boys?
 
 
 
@@ -153,13 +154,20 @@ A_mod %>% gf_bar(~grade, fill = ~gender)
 ```{r}
 A_mod %>% gf_histogram(~ strength_training_7d, fill = ~gender, bins = 1, position = "dodge")
 ```
-4. Do girls have better sleep than boys?
+
+```{r}
+A_mod %>% gf_density(~ strength_training_7d, fill = ~gender)
+```
+
+
+
+4. Do girls have better school night sleep than boys?
 
 ```{r}
 A_mod %>% gf_bar(~ gender, fill = ~school_night_hours_sleep)
 ```
 
-5. 
+5. gi
 
 ```r
 # human chunk
@@ -227,7 +235,7 @@ And on the Quant variables panel-A data has :
 - `age` has a mean of 16.15, sd of 1.26, median of 16.00, min of 12.00, and max of 18.00
 
 ```{r}
-#| label: mutate-panelA-factors
+#| label: mutate-panelB-factors
 
 B_mod <- PanelB |>  mutate( gender = as.factor(gender),
     grade = as.factor(grade), hispanic = as.factor(hispanic), race = as.factor(race), helmet_12m = as.factor(helmet_12m), text_while_driving_30d = as.factor(text_while_driving_30d), hours_tv_per_school_day = as.factor(hours_tv_per_school_day)) 
@@ -240,12 +248,39 @@ glimpse(B_mod)
 
 One question *this* table can answer. One it cannot. Write both.
 
+
 ### 3. Choose a mark
 
 Geom, map mark, or (later) test that matches the pair type. Name it before you code.
 
+
+
+
 ```{r}
-vcd::structable(hours_tv_per_school_day ~ gender, data = B_mod) %>% vcd::mosaic()
+vcd::structable(grade ~ gender , data = B_mod) %>% vcd::mosaic()
+```
+
+
+```{r}
+vcd::structable(grade ~ gender , data = B_mod) %>% vcd::mosaic(type = "expected")
+```
+```{r}
+mosaic::xchisq.test(grade ~ gender, data = B_mod) 
+```
+
+```{r}
+vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic()
+
+```
+
+```{r}
+vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic(type = "expected")
+
+```
+
+
+```{r}
+mosaic::xchisq.test(gender ~ helmet_12m , data = B_mod) 
 ```
 
 
