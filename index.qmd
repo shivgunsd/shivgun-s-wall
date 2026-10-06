@@ -107,7 +107,7 @@ A_mod <- PanelA |>  mutate( gender = as.factor(gender),
 glimpse(A_mod)
     
 ```
-All is well now as the Blue Lanterns say. 
+All is well now as the *Blue Lanters* say
 
 
 ### 2. Ask
@@ -428,7 +428,7 @@ B_mod %>% gf_boxplot( x = ~age, y =~text_while_driving_30d)
 
 **Most students never wear a helmet, whether they are boys or girls.**
 
-Never" is the tallest bar by a wide margin, and both boys and girls make up a large part of it.
+Never is the tallest bar by a wide margin, and both boys and girls make up a large part of it.
 
 Helmet use is rare among students of both genders.
 
@@ -437,7 +437,8 @@ Helmet use is rare among students of both genders.
 
 This panel shows how often students say they wear a helmet, not why they skip it. 
 
-The chart shows counts, not proportions, so not an exact boys versus girls comparison.
+The chart shows counts, not proportions, so not an exact boys versus girls comparison. 
+
 
 # Panel C — place
 
