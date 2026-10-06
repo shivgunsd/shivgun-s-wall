@@ -28,7 +28,6 @@ We load from this folder:
 
 ```{r}
 #| label: setup
-library(tidyverse)
 library(skimr)
 library(mosaic)
 library(readr)
@@ -104,7 +103,7 @@ A_mod <- PanelA |>  mutate( gender = as.factor(gender),
 glimpse(A_mod)
     
 ```
-All is well now.
+All is well now as the Blue Lanterns say. 
 
 
 ### 2. Ask
@@ -117,6 +116,7 @@ Looking at the overall Spine statement, I can pose the following Questions:
 2. What is the sex distribution among the grades?
 3. Do boys strength train more than girls?
 4. Do girls have better school night sleep than boys?
+5. Are heavier students more physically active?
 
 
 
@@ -145,6 +145,7 @@ A_mod %>% gf_bar (~ grade)
 
 ```{r}
 A_mod %>% gf_bar(~grade, fill = ~gender)
+
 ```
 
 
@@ -167,7 +168,16 @@ A_mod %>% gf_density(~ strength_training_7d, fill = ~gender)
 A_mod %>% gf_bar(~ gender, fill = ~school_night_hours_sleep)
 ```
 
-5. gi
+5. Are heavier students more physically active?
+
+```{r}
+A_mod %>% 
+  filter(gender %in% c("male", "female")) %>%
+
+  gf_point(weight ~ physically_active_7d, color= ~gender)
+```
+
+
 
 ```r
 # human chunk
