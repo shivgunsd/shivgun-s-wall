@@ -28,6 +28,8 @@ We load from this folder:
 
 ```{r}
 #| label: setup
+#| message: false
+#| warning: false
 library(skimr)
 library(mosaic)
 library(readr)
@@ -195,7 +197,7 @@ A_mod %>% gf_density(~ strength_training_7d, fill = ~gender)
 A_mod %>% gf_bar(~ gender, fill = ~school_night_hours_sleep)
 ```
 
-**Are heavier students more physically active, does it differ between boys and girls?**
+**5. Are heavier students more physically active, does it differ between boys and girls?**
 
 ```{r}
 A_mod %>% 
@@ -394,6 +396,7 @@ mosaic::xchisq.test(gender ~ helmet_12m , data = B_mod)
 ### 4. Predict
 
 What do we think we will see? One sentence, before Run.
+I think more boys would likely skip wearing helmets. 
 
 ### 5. Make
 
@@ -412,6 +415,16 @@ B_mod %>% gf_bar( ~text_while_driving_30d, fill = ~gender)
 B_mod %>% gf_bar( ~helmet_12m, fill = ~gender)
 
 ```
+```{r}
+vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic()
+```
+```{r}
+vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic(type = 
+                                                                      "expected")
+
+```
+
+
 3. Are the students who text while driving older?
 
 ```{r}
