@@ -1,9 +1,23 @@
 ---
 title: "About"
+image: myphoto.png
+about:
+  template: solana
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/shivgun/
+    - icon: github
+      text: Github
+      href: https://github.com/shivgunsd
+    - icon: globe
+      text: Portfolio
+      href: https://shivgun.netlify.app
+    
 ---
 
-About this site
+Hello, I’m Shivgun, a third year Bachelor of Design student majoring in Business, Services and Systems Design at Srishti Manipal Institute of Art, Design and Technology, Bengaluru.
 
-```{r}
-1 + 1
-```
+This wall documents my work from FOSEDA, Fundamentals of Statistics and Exploratory Data Analysis, a studio that took a set of Gen Z designers and threw them into the deep end of R, RStudio, and data visualisation. What started as deciphering a programming language through plain English became a genuine appreciation for what data can reveal when you ask it the right questions.
+
+Here you will find exploratory analysis across multiple datasets, interactive maps, and the slow but satisfying process of learning to let the data tell the story.

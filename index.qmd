@@ -1,7 +1,7 @@
 ---
 title: "Group 4 — Youth risk"
 subtitle: "Studio wall"
-author: "Shivgun, Shreeya and Meghana"
+author: "Shivgun and gang"
 format:
   html:
     toc: true
@@ -21,10 +21,13 @@ This folder is ours for the ten days. Three tables, three shapes.
 - **Panel A** (`panel-A.csv`) — YRBSS Quants: height, weight, days active, strength training, hours of sleep.
 - **Panel B** (`panel-B.csv`) — YRBSS Quals: helmet, texting while driving, TV, race, gender, grade. Same survey, different columns.
 - **Panel C** (`panel-C.csv`) — gapminder 2007 world. Ask a *different* map question than Group 3 (wealth, population symbols, continent).
+- **Panel D** (`Erin Brokovich`) - A map of Hinkley, CA, USA 
 
 A and B are the same teenagers cut two ways. Do not mix them into one dishonest figure.
 
 We load from this folder:
+
+{{< include _fontsetup.qmd >}}
 
 ```{r}
 #| label: setup
@@ -48,7 +51,7 @@ Found tables train the mark. A campus Free Hunch, if we collect one, is a **made
 
 # Panel A — body / measure
 
-*height, weight, physically_active_7d, school_night_hours_sleep are Quant. grade is Qual.*
+*height, weight, physically_active_7d, school_night_hours_sleep are Quant. grade is Qual.*\
 
 
 
@@ -459,12 +462,14 @@ The chart shows counts, not proportions, so not an exact boys versus girls compa
 
 Geometry is not in the CSV. Join in R, then use the same seven headings.
 
-```r
+```{r}
 # library(sf)
 # library(rnaturalearth)
 # world <- ne_countries(scale = "medium", returnclass = "sf")
 # # join on country name; list the unmatched labels
+
 ```
+
 
 
 ### 1. See the table
@@ -475,8 +480,49 @@ What is a case? Which columns are Quant / Qual? What is missing?
 # glimpse() / inspect() / skim()
 ```
 ```{r}
-#| label: inspect-panelC-data
+#| label: inspect-panelC-data-1
 dplyr::glimpse(PanelC)
+
+```
+
+My PanelA data has:
+
+  - 142 observations and 06 variables.
+  
+  - `year`: Quantitative, numeric
+  - `lifeExp`: Quantitative, numeric
+  - `pop`: Quantitative, numeric
+  - `gdpPercap`: Quantitative, numeric
+  - `country`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `continent`: Qualitative, categorical. Encoded <chr>, to be mutated
+  
+
+```{r}
+#| label: inspect-panelC-data-2
+skimr::skim(PanelC)
+```
+
+Furthermore, on the Qual variables panel-C data has : 
+
+- `country` has 142 levels 
+- `continent` has 5 levels
+
+And on the Quant variables panel-C data has :
+
+- `year` has a mean of 2.007, sd of 0.00, median of 2.007000e+03, min of 2007.00, and max of 2.007e+03
+- `lifeExp` has a mean of 6.70, sd of 1.20, median of 7.19, min of 39.6, and max of 8.26 e+01
+- `pop` has a mean of 4.40, sd of 1.47, median of 1.05, min of 29.94, and max of 180.99
+- `gdpPercap` has a mean of 3.90, sd of 2.56, median of 4.00, min of 0.00, and max of 7.00
+
+There is NO missing data. We are good to mutate.
+
+```{r}
+#| label: mutate-panelC-factors
+
+C_mod <- PanelC |>  mutate( country = as.factor(country), continent = as.factor(continent)) 
+
+glimpse(C_mod)
+    
 
 ```
 
@@ -485,9 +531,22 @@ dplyr::glimpse(PanelC)
 
 One question *this* table can answer. One it cannot. Write both.
 
+Looking at the overall Spine statement, I can pose the following Questions:
+
+1. Which continents have the highest GDP per capita?
+2. Which continents have the largest populations?
+3. Does life expectancy vary across continents?
+4. Has GDP per capita changed over the years?
+5. Has life expectancy improved over the years?
+
+
+
 ### 3. Choose a mark
 
 Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+d
+Box Plot
+Scatter Plot
 
 ### 4. Predict
 
@@ -497,13 +556,22 @@ What do we think we will see? One sentence, before Run.
 
 Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
 
-```r
-# human chunk
-
-# ## Prompt we actually used
-# ai_draft
-# ours
+```{r}
+C_mod %>% gf_boxplot( x = ~continent, y = ~gdpPercap)
 ```
+```{r}
+C_mod %>% gf_boxplot(x = ~continent, y = ~pop) 
+```
+
+
+```{r}
+C_mod %>% gf_boxplot(x = ~continent, y = ~lifeExp) 
+```
+
+```{r}
+C_mod %>% gf_point(x = ~year, y = ~gdpPercap)
+```
+
 
 ### 6. Say
 
@@ -523,6 +591,56 @@ What the spine looks like after three panels.
 - Which lines were human, which were machine
 - Limits: sample, missingness, the test we did not run
 - Gift for the steal-this strip (palette, annotation, join trick)
+
+
+
+# Panel D — The Hinkley Case
+
+Based on the movie *Erin Brokovich* 
+
+### 1. Setting Up
+
+```{r}
+library(tidyverse)
+library(sf)
+library(leaflet)
+library(leaflet.providers) # Base Map tile providers
+library(leaflet.extras) # leaflet frills and thrills
+
+# Data
+library(osmdata) # Import OSM Vector Data into R
+
+```
+
+
+### 2. Playing with Maps
+
+```{r}
+h <- leaflet() %>%
+    # Add default OpenStreetMap map tiles
+    addTiles() %>%
+    # Set view to be roughly centred on Hinkley, CA,USA
+   setView(lng = -117.1990, lat = 34.9300, zoom = 13.4)
+
+ h
+```
+
+
+```{r}
+map_esri_imagery <- leaflet() %>% 
+    setView(lng = -117.1990, lat = 34.9300, zoom = 13.4) %>% 
+    addProviderTiles("Esri.WorldImagery") %>% 
+    addCircleMarkers(lng = -117.1990,
+                     lat = 34.9300,
+                     radius = 5,
+                     color = "brown",
+                     fillOpacity = 1,
+                     label = "Hinkley, CA")
+
+map_esri_imagery
+```
+
+
 
 ```r
 # sessionInfo()
