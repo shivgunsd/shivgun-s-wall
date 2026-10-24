@@ -996,18 +996,12 @@ $ hours_tv_per_school_day &lt;fct&gt; 5+, 5+, 5+, 2, 3, 5+, 5+, 5+, 5+, do not w
 <h1>Panel C — place</h1>
 <p><em>Same file as Group 3 C. Different question. lifeExp vs gdpPercap, or pop as symbol size.</em></p>
 <p>Geometry is not in the CSV. Join in R, then use the same seven headings.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sf)</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(rnaturalearth)</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># world &lt;- ne_countries(scale = "medium", returnclass = "sf")</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># # join on country name; list the unmatched labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
 <section id="see-the-table-2" class="level3">
 <h3 class="anchored" data-anchor-id="see-the-table-2">1. See the table</h3>
 <p>What is a case? Which columns are Quant / Qual? What is missing?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 142
 Columns: 6
@@ -1030,7 +1024,7 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <li><p><code>continent</code>: Qualitative, categorical. Encoded <chr>, to be mutated</chr></p></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -1214,16 +1208,16 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </ul>
 <p>And on the Quant variables panel-C data has :</p>
 <ul>
-<li><code>year</code> has a mean of 2.007, sd of 0.00, median of 2.007000e+03, min of 2007.00, and max of 2.007e+03</li>
-<li><code>lifeExp</code> has a mean of 6.70, sd of 1.20, median of 7.19, min of 39.6, and max of 8.26 e+01</li>
-<li><code>pop</code> has a mean of 4.40, sd of 1.47, median of 1.05, min of 29.94, and max of 180.99</li>
-<li><code>gdpPercap</code> has a mean of 3.90, sd of 2.56, median of 4.00, min of 0.00, and max of 7.00</li>
+<li><p><code>year</code> has a mean of 2.007000e+03 , sd of 0.00, median of 2.007000e+03, min of 2007.00, and max of 2.007000e+03</p></li>
+<li><p><code>lifeExp</code> has a mean of 6.700742e+01, sd of 1.207302e+01 , median of 7.193550e+01 , min of 39.61, and max of 8.260300e+01</p></li>
+<li><p><code>pop</code> has a mean of 4.402122e+07, sd of 1.476214e+087, median of 1.051753e+07, min of 199579.00, and max of 1.318683e+09</p></li>
+<li><p><code>gdpPercap</code> has a mean of1.168007e+04, sd of 1.285994e+04, median of 6.124371e+03 , min of 277.5519 , and max of 4.935719e+04</p></li>
 </ul>
-<p>There is NO missing data. We are good to mutate.</p>
+<p>There is NO missing data. We are good to mutate</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="ot">&lt;-</span> PanelC <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">country =</span> <span class="fu">as.factor</span>(country), <span class="at">continent =</span> <span class="fu">as.factor</span>(continent)) </span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(C_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="ot">&lt;-</span> PanelC <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">country =</span> <span class="fu">as.factor</span>(country), <span class="at">continent =</span> <span class="fu">as.factor</span>(continent)) </span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(C_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 142
 Columns: 6
@@ -1244,7 +1238,7 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <li><p>Which continents have the highest GDP per capita?</p></li>
 <li><p>Which continents have the largest total populations?</p></li>
 <li><p>Does life expectancy vary across continents?</p></li>
-<li><p>Which countries have the highest and lowest life expectancy?</p></li>
+<li><p>How do countries around the world differ in life expectancy, population, and GDP per capita in 2007?</p></li>
 <li><p>Is higher GDP per capita associated with higher life expectancy?</p></li>
 <li><p>Do countries with larger populations tend to have lower life expectancy?</p></li>
 </ol>
@@ -1271,68 +1265,80 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <li>Which continents have the highest GDP per capita?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>gdpPercap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>gdpPercap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="2" type="1">
 <li>Which continents have the largest total populations?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a> C_pop <span class="ot">&lt;-</span> C_mod <span class="sc">%&gt;%</span> </span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> </span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_pop =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>C_pop <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>total_pop) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>C_pop <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>total_pop) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="3" type="1">
 <li>Does life expectancy vary across continents?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>lifeExp) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>lifeExp) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="4" type="1">
-<li>Which countries have the highest and lowest life expectancy?</li>
+<li><p>How do countries around the world differ in life expectancy, population, and GDP per capita in 2007?</p></li>
+<li><p>Life Expectancy</p></li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> rnaturalearth<span class="sc">::</span><span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>world_selected <span class="ot">&lt;-</span> world <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(name, geometry)</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>C_new <span class="ot">&lt;-</span> C_mod <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(world_selected, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span> <span class="ot">=</span> <span class="st">"name"</span>))</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>world <span class="sc">%&gt;%</span> ggformula<span class="sc">::</span><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span>geometry)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span>geometry, <span class="at">data =</span> C_new, <span class="at">fill =</span> <span class="sc">~</span>lifeExp) <span class="sc">+</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"grey85"</span>) <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Life Expectancy around the world"</span>,</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing life expectancy across countries in 2007"</span>,</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: Panel C dataset"</span>,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Life expectancy (years)"</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_madhatter</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span> geometry, <span class="at">data =</span> C_new, <span class="at">fill =</span> <span class="sc">~</span>pop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="1">
+<li>Population</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span>geometry, <span class="at">data =</span> C_new, <span class="at">fill =</span> <span class="sc">~</span>pop) <span class="sc">+</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"grey85"</span>) <span class="sc">+</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Population around the world"</span>, </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing popualtion across countries in 2007"</span>, </span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: Panel C dataset"</span>,</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Population (log10 scale)"</span> </span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_madhatter</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="3" type="1">
+<li>GDP per capita</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span>geometry, <span class="at">data =</span> C_new, <span class="at">fill =</span> <span class="sc">~</span>gdpPercap) <span class="sc">+</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="st">"grey85"</span>) <span class="sc">+</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"GDP per capita around the world"</span>, </span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Comparing gdp per person across countries in 2007"</span>,</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Source: Panel C dataset"</span>,</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"GDP per capita"</span> </span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_madhatter</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1340,23 +1346,34 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </section>
 <section id="say-2" class="level3">
 <h3 class="anchored" data-anchor-id="say-2">6. Say</h3>
-<p>Caption + one sentence we will stand behind. Title is a sentence, not a column name.</p>
+<p>Life Expectancy</p>
+<p><strong>Sub-Saharan Africa trails the world in life expectancy</strong></p>
+<p>The dark purple cluster across central and southern Africa stands out starkly against the yellow-green of Europe, North America and Australia, where people live well into their 80s.</p>
+<p>Population</p>
+<p><strong>China and India are in a population category of their own</strong></p>
+<p>China and India stand out as clear outliers, they burn so bright on the map, every other country fades into the dark.</p>
+<p>GDP per capita</p>
+<p><strong>North America, Europe and Australia lead in GDP per capita while Africa and South Asia lag far behind</strong></p>
+<p>North America, Western Europe and Australia glow green against a largely dark purple map, with Africa and South Asia showing the lowest GDP per capita by a wide margin.</p>
+<p><strong><em>The pattern across all three maps tells the same story: the countries with the highest GDP per capita also live the longest.</em></strong></p>
 </section>
 <section id="limit-2" class="level3">
 <h3 class="anchored" data-anchor-id="limit-2">7. Limit</h3>
-<p>What this panel cannot do. Which kit table we refused to abuse.</p>
+<p>Russia, the USA and the Democratic Republic of Congo are missing from the map.</p>
+<p>The USA and Russia are among the largest economies in the world, and the DRC is one of the most populous nations in Africa. Their presence could meaningfully shift the story these maps are telling.</p>
 </section>
 </section>
 <section id="conclusion" class="level1">
 <h1>Conclusion</h1>
 <p>What the spine looks like after three panels.</p>
-<ul>
-<li>The question we will defend in ninety seconds</li>
-<li>What we will <strong>not</strong> claim</li>
-<li>Which lines were human, which were machine</li>
-<li>Limits: sample, missingness, the test we did not run</li>
-<li>Gift for the steal-this strip (palette, annotation, join trick)</li>
-</ul>
+<p>Bodies, habits and wealth follow patterns, and those patterns are rarely random or fair.</p>
+<p>What we will not claim:</p>
+<p>That correlation is causation, heavier students are not necessarily less active because of their weight. That missing countries in Panel C do not matter, they do. That 2007 GDP or life expectancy data reflects the world today.</p>
+<p>Which lines were human, which were machine:</p>
+<p>Human: the questions, the observations, the Say sections, the choice of variables, the story</p>
+<p>Machine: debugging syntax errors, fixing missing brackets.</p>
+<p>Limits:</p>
+<p>PanelA and B have significant missing data in height and weight. Panel C is missing Russia, USA and DRC.</p>
 </section>
 <section id="panel-d-the-hinkley-case" class="level1">
 <h1>Panel D — The Hinkley Case</h1>
@@ -1364,11 +1381,8 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <p>Pacific Gas and Electric PG &amp; E had been leaking Chromium 6, a toxic chemical into the groundwater of Hinkley, a small desert community in California.</p>
 <p>Residents were getting sick and no one was connecting the dots. Erin did.</p>
 <p>This map traces the story on the ground: the PG&amp;E compressor facility, the Chromium-6 contamination plume spreading through the aquifer, the groundwater flow, and the homes of the families whose lives were quietly being destroyed.</p>
-<section id="setting-up" class="level3">
-<h3 class="anchored" data-anchor-id="setting-up">1. Setting Up</h3>
-</section>
 <section id="playing-with-maps" class="level3">
-<h3 class="anchored" data-anchor-id="playing-with-maps">2. Playing with Maps</h3>
+<h3 class="anchored" data-anchor-id="playing-with-maps">1. Playing with Maps</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>   </span>
@@ -1433,7 +1447,7 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </div>
 </section>
 <section id="the-final-map" class="level3">
-<h3 class="anchored" data-anchor-id="the-final-map">3. The Final Map</h3>
+<h3 class="anchored" data-anchor-id="the-final-map">2. The Final Map</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>hinkley_map <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
@@ -1496,8 +1510,8 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <span id="cb56-59"><a href="#cb56-59" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb56-60"><a href="#cb56-60" aria-hidden="true" tabindex="-1"></a>hinkley_map</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-133c5c0cc8aea0c91eae" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-133c5c0cc8aea0c91eae">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.2247079605689,-117.145817921965,-117.1427173458527,-117.2111349640518],"lat":[34.94412761049036,34.93621954324678,34.89112358375753,34.89344061852938]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[34.90374722777231,-117.1622383607778,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG & E : Providing water and cancer and hexavalent chromium to residents since 1952.",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[34.91908190532862,-117.1893768313859,3300,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":0.5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},"groundwater",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[34.9037,34.906,34.91,34.915,34.9191,34.928],[-117.1622,-117.168,-117.175,-117.182,-117.1894,-117.205],[300,450,600,750,900,1200],null,null,{"interactive":true,"className":"","stroke":true,"color":"brown","weight":1,"opacity":0.5,"fill":true,"fillColor":"orange","fillOpacity":0.15},null,null,"Chromium-6 Contamination Plume",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircleMarkers","args":[[34.92896619928256,34.90717899139342,34.9219608916045],[-117.2020329207214,-117.1792589057241,-117.1977268768338],6,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.8},null,null,["Donna Jensen - Children were playing in contaminated water, first family Erin visited","Pete Goya - Hinkley resident affected by Chromium-6","Roberta Walker - Key community member who worked with Erin"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.91908190532862,-117.1893768313859],13,[]],"limits":{"lat":[34.89112358375753,34.94412761049036],"lng":[-117.2247079605689,-117.1427173458527]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-9eb50aac796568ccaee1" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9eb50aac796568ccaee1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.2247079605689,-117.145817921965,-117.1427173458527,-117.2111349640518],"lat":[34.94412761049036,34.93621954324678,34.89112358375753,34.89344061852938]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[34.90374722777231,-117.1622383607778,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG & E : Providing water and cancer and hexavalent chromium to residents since 1952.",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[34.91908190532862,-117.1893768313859,3300,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":0.5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},"groundwater",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[34.9037,34.906,34.91,34.915,34.9191,34.928],[-117.1622,-117.168,-117.175,-117.182,-117.1894,-117.205],[300,450,600,750,900,1200],null,null,{"interactive":true,"className":"","stroke":true,"color":"brown","weight":1,"opacity":0.5,"fill":true,"fillColor":"orange","fillOpacity":0.15},null,null,"Chromium-6 Contamination Plume",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircleMarkers","args":[[34.92896619928256,34.90717899139342,34.9219608916045],[-117.2020329207214,-117.1792589057241,-117.1977268768338],6,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.8},null,null,["Donna Jensen - Children were playing in contaminated water, first family Erin visited","Pete Goya - Hinkley resident affected by Chromium-6","Roberta Walker - Key community member who worked with Erin"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.91908190532862,-117.1893768313859],13,[]],"limits":{"lat":[34.89112358375753,34.94412761049036],"lng":[-117.2247079605689,-117.1427173458527]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sessionInfo()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

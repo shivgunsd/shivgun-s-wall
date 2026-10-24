@@ -420,9 +420,15 @@ B_mod %>% gf_bar( ~helmet_12m, fill = ~gender)
 
 ```
 ```{r}
+#| fig.height: 10
+#| fig.width: 7
+
 vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic()
 ```
 ```{r}
+#| fig.height: 10
+#| fig.width: 7
+
 vcd::structable(gender ~ helmet_12m , data = B_mod) %>% vcd::mosaic(type = 
                                                                       "expected")
 
@@ -463,14 +469,6 @@ The chart shows counts, not proportions, so not an exact boys versus girls compa
 
 Geometry is not in the CSV. Join in R, then use the same seven headings.
 
-```{r}
-# library(sf)
-# library(rnaturalearth)
-# world <- ne_countries(scale = "medium", returnclass = "sf")
-# # join on country name; list the unmatched labels
-
-```
-
 
 
 ### 1. See the table
@@ -510,12 +508,15 @@ Furthermore, on the Qual variables panel-C data has :
 
 And on the Quant variables panel-C data has :
 
-- `year` has a mean of 2.007, sd of 0.00, median of 2.007000e+03, min of 2007.00, and max of 2.007e+03
-- `lifeExp` has a mean of 6.70, sd of 1.20, median of 7.19, min of 39.6, and max of 8.26 e+01
-- `pop` has a mean of 4.40, sd of 1.47, median of 1.05, min of 29.94, and max of 180.99
-- `gdpPercap` has a mean of 3.90, sd of 2.56, median of 4.00, min of 0.00, and max of 7.00
+- `year` has a mean of 2.007000e+03	, sd of 0.00, median of 2.007000e+03, min of 2007.00, and max of 2.007000e+03
 
-There is NO missing data. We are good to mutate.
+- `lifeExp` has a mean of 6.700742e+01, sd of 1.207302e+01	, median of 7.193550e+01	, min of 39.61, and max of 8.260300e+01
+
+- `pop` has a mean of 4.402122e+07, sd of 1.476214e+087, median of 1.051753e+07, min of 199579.00, and max of 1.318683e+09
+
+- `gdpPercap` has a mean of1.168007e+04, sd of 1.285994e+04, median of 6.124371e+03	, min of 277.5519	, and max of 4.935719e+04
+
+There is NO missing data. We are good to mutate
 
 ```{r}
 #| label: mutate-panelC-factors
@@ -523,7 +524,20 @@ There is NO missing data. We are good to mutate.
 C_mod <- PanelC |>  mutate( country = as.factor(country), continent = as.factor(continent)) 
 
 glimpse(C_mod)
-    
+  
+```
+
+```{r}
+#| include: false
+library(sf)
+library(rnaturalearth) 
+world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+
+world_selected <- world %>% dplyr::select(name, geometry)
+
+C_new <- C_mod %>% left_join(world_selected, by = c("country" = "name"))
+
+world %>% ggformula::gf_sf(geometry = ~geometry)
 
 ```
 
@@ -540,7 +554,7 @@ Looking at the overall Spine statement, I can pose the following Questions:
 
 3. Does life expectancy vary across continents?
 
-4. Which countries have the highest and lowest life expectancy?
+4. How do countries around the world differ in life expectancy, population, and GDP per capita in 2007? 
 
 5. Is higher GDP per capita associated with higher life expectancy?
 
@@ -574,6 +588,8 @@ Human brick first. Optional: one AI prompt, pasted below, only for what section 
 1. Which continents have the highest GDP per capita?
 
 ```{r}
+#| eval: false
+#| echo: true
 C_mod %>% gf_boxplot( x = ~continent, y = ~gdpPercap)
 ```
 
@@ -581,10 +597,17 @@ C_mod %>% gf_boxplot( x = ~continent, y = ~gdpPercap)
 
 
 ```{r}
+#| include: false
+
  C_pop <- C_mod %>% 
   group_by(continent) %>% 
   summarise(total_pop = sum(pop, na.rm = TRUE))
 
+```
+
+```{r}
+#| eval: false
+#| echo: true
 C_pop %>% gf_boxplot( x = ~continent, y = ~total_pop) 
 
 ```
@@ -592,44 +615,115 @@ C_pop %>% gf_boxplot( x = ~continent, y = ~total_pop)
 3. Does life expectancy vary across continents?
 
 ```{r}
+#| eval: false
+#| echo: true
 C_mod %>% gf_boxplot(x = ~continent, y = ~lifeExp) 
 ```
 
-4. Which countries have the highest and lowest life expectancy?
+4. How do countries around the world differ in life expectancy, population, and GDP per capita in 2007?
+
+1. Life Expectancy 
 
 ```{r}
 
-world <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+gf_sf(geometry = ~geometry, data = C_new, fill = ~lifeExp) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "Life Expectancy around the world",
+    subtitle = "Comparing life expectancy across countries in 2007",
+    caption = "Source: Panel C dataset",
+    fill = "Life expectancy (years)"
+  ) +
+  theme_madhatter() 
 
-world_selected <- world %>% dplyr::select(name, geometry)
+```
 
-C_new <- C_mod %>% left_join(world_selected, by = c("country" = "name"))
 
-world %>% ggformula::gf_sf(geometry = ~geometry)
+2. Population 
 
-gf_sf(geometry = ~ geometry, data = C_new, fill = ~pop)
+```{r}
+gf_sf(geometry = ~geometry, data = C_new, fill = ~pop) + 
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "Population around the world", 
+    subtitle = "Comparing popualtion across countries in 2007", 
+    caption = "Source: Panel C dataset",
+    fill = "Population (log10 scale)" 
+  ) +
+  theme_madhatter() 
+
+```
+
+
+3. GDP per capita 
+
+```{r}
+gf_sf(geometry = ~geometry, data = C_new, fill = ~gdpPercap) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "GDP per capita around the world", 
+    subtitle = "Comparing gdp per person across countries in 2007",
+    caption = "Source: Panel C dataset",
+    fill = "GDP per capita" 
+  ) +
+  theme_madhatter() 
 
 ```
 
 
 ### 6. Say
 
-Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+Life Expectancy
+
+**Sub-Saharan Africa trails the world in life expectancy** 
+
+The dark purple cluster across central and southern Africa stands out starkly against the yellow-green of Europe, North America and Australia, where people live well into their 80s.
+
+
+Population
+
+**China and India are in a population category of their own** 
+
+China and India stand out as clear outliers, they burn so bright on the map, every other country fades into the dark. 
+
+GDP per capita
+
+**North America, Europe and Australia lead in GDP per capita while Africa and South Asia lag far behind** 
+
+North America, Western Europe and Australia glow green against a largely dark purple map, with Africa and South Asia showing the lowest GDP per capita by a wide margin.
+
+
+***The pattern across all three maps tells the same story: the countries with the highest GDP per capita also live the longest.*** 
 
 ### 7. Limit
 
-What this panel cannot do. Which kit table we refused to abuse.
+Russia, the USA and the Democratic Republic of Congo are missing from the map. 
+
+The USA and Russia are among the largest economies in the world, and the DRC is one of the most populous nations in Africa. Their presence could meaningfully shift the story these maps are telling. 
 
 
 # Conclusion
 
 What the spine looks like after three panels.
 
-- The question we will defend in ninety seconds
-- What we will **not** claim
-- Which lines were human, which were machine
-- Limits: sample, missingness, the test we did not run
-- Gift for the steal-this strip (palette, annotation, join trick)
+Bodies, habits and wealth follow patterns, and those patterns are rarely random or fair.
+
+What we will not claim:
+
+That correlation is causation, heavier students are not necessarily less active because of their weight.
+That missing countries in Panel C do not matter, they do.
+That 2007 GDP or life expectancy data reflects the world today.
+
+Which lines were human, which were machine:
+
+Human: the questions, the observations, the Say sections, the choice of variables, the story 
+
+Machine: debugging syntax errors, fixing missing brackets. 
+
+Limits:
+
+PanelA and B have significant missing data in height and weight.
+Panel C is missing Russia, USA and DRC.
 
 
 
@@ -643,7 +737,6 @@ Residents were getting sick and no one was connecting the dots. Erin did.
 
 This map traces the story on the ground: the PG&E compressor facility, the Chromium-6 contamination plume spreading through the aquifer, the groundwater flow, and the homes of the families whose lives were quietly being destroyed.
 
-### 1. Setting Up
 
 ```{r}
 #| label: pDsetup
@@ -660,7 +753,7 @@ library(osmdata) # Import OSM Vector Data into R
 ```
 
 
-### 2. Playing with Maps
+### 1. Playing with Maps
 
 ```{r}
 #| eval: false
@@ -744,7 +837,7 @@ leaflet() %>%
 ```
 
 
-### 3. The Final Map
+### 2. The Final Map
 
 ```{r}
 hinkley_map <- leaflet() %>%
