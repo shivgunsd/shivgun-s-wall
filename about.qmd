@@ -2,14 +2,14 @@
 title: "About"
 image: myphoto.png
 about:
-  template: solana
+  template: jolla
   links:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/shivgun/
-    - icon: github
-      text: Github
-      href: https://github.com/shivgunsd
+    - icon: envelope
+      text: Contact me here
+      href: mailto:shivgunsd@gmail.com
     - icon: globe
       text: Portfolio
       href: https://shivgun.netlify.app

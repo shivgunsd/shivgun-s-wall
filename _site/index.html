@@ -124,10 +124,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <script src="site_libs/leaflet-binding-2.2.3/leaflet.js"></script>
 
-<script src="site_libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
-
-<script src="site_libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
-
 
 
 <link rel="stylesheet" href="styles.css">
@@ -230,122 +226,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Panel B</strong> (<code>panel-B.csv</code>) — YRBSS Quals: helmet, texting while driving, TV, race, gender, grade. Same survey, different columns.</li>
 <li><strong>Panel C</strong> (<code>panel-C.csv</code>) — gapminder 2007 world. Ask a <em>different</em> map question than Group 3 (wealth, population symbols, continent).</li>
 <li><strong>Panel D</strong> (<code>Erin Brokovich</code>) - A map of Hinkley, CA, USA</li>
+<li><strong>Panel E</strong> (<code>Primary Research</code>) - Hunch question</li>
 </ul>
 <p>A and B are the same teenagers cut two ways. Do not mix them into one dishonest figure.</p>
 <p>We load from this folder:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: setup-site</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| cache: false</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Install/load packages if needed</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"showtext"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"showtext"</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"ggplot2"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"systemfonts"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"systemfonts"</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: sysfonts</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: showtextdb</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(systemfonts)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Clean the slate</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>systemfonts<span class="sc">::</span><span class="fu">clear_local_fonts</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Run `scan_local_fonts()` in order to re-add automatically added fonts</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>systemfonts<span class="sc">::</span><span class="fu">clear_registry</span>()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add three Google Fonts</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Arguments: font family name, Google Font name</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">"Roboto Condensed"</span>, <span class="st">"Roboto Condensed"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">"Lato"</span>, <span class="st">"Lato"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="st">"Alegreya"</span>, <span class="st">"Alegreya"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell R to use showtext for all subsequent plots</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: set DPI for raster devices (adjust if you need high-res PNGs)</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_opts</span>(<span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set a site-wide ggplot theme using the loaded fonts</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>(</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">base_size =</span> <span class="dv">14</span>,</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">base_family =</span> <span class="st">"Roboto Condensed"</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Set the ggplot theme</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>theme_madhatter <span class="ot">&lt;-</span> <span class="cf">function</span>(){ </span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="co"># Base Theme, Black-White</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_sub_axis</span>(<span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>                   <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">size =</span> <span class="dv">6</span>)) <span class="sc">+</span> </span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_sub_legend</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Roboto Condensed"</span>, </span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">size =</span> <span class="dv">6</span>),</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                     <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Alegreya"</span>, </span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span> </span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_sub_plot</span>(<span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Alegreya"</span>, </span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">size =</span> <span class="dv">14</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title.position =</span> <span class="st">"plot"</span>,</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                   <span class="at">subtitle =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Montserrat"</span>, </span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>                   <span class="at">caption =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Alegreya"</span>, </span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">size =</span> <span class="dv">6</span>),</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>                   <span class="at">caption.position =</span> <span class="st">"plot"</span>)</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="do">## Set the theme for all plots</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">theme_set</span>(<span class="fu">theme_madhatter</span>())</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="do">## Update the fonts for geoms as well!</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="do">## Use available fonts in ggplot label and text within the ggplot geoms </span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">update_geom_defaults</span>(<span class="at">geom =</span> <span class="st">"text"</span>, <span class="at">new =</span> <span class="fu">list</span>(</span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"Roboto Condensed"</span>,</span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  <span class="at">face =</span> <span class="st">"plain"</span>,</span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">8</span><span class="sc">/</span>ggplot2<span class="sc">::</span>.pt, <span class="co"># Converting 8 points to "mm" default</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"#2b2b2b"</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">update_geom_defaults</span>(<span class="at">geom =</span> <span class="st">"label"</span>, <span class="at">new =</span> <span class="fu">list</span>(</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="st">"Roboto Condensed"</span>,</span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>  <span class="at">face =</span> <span class="st">"plain"</span>,</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">8</span><span class="sc">/</span>ggplot2<span class="sc">::</span>.pt, <span class="co"># Converting 8 points to "mm" default</span></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="st">"#2b2b2b"</span></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula) </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># (NEW!!) for Panel B</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co"># (NEW!!) for clean stat outputs</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>PanelA <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-A.csv"</span>)</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>PanelB <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-B.csv"</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>PanelC <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-C.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula) </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># (NEW!!) for Panel B</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co"># (NEW!!) for clean stat outputs</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>PanelA <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-A.csv"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>PanelB <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-B.csv"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>PanelC <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-C.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Found tables train the mark. A campus Free Hunch, if we collect one, is a <strong>made</strong> panel of the same pair type — new people, old grammar. It does not replace A, B, or C.</p>
 </section>
@@ -356,9 +252,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="see-the-table" class="level3">
 <h3 class="anchored" data-anchor-id="see-the-table">1. See the table</h3>
 <p>What is a case? Which columns are Quant / Qual? What is missing?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 13,583
 Columns: 8
@@ -385,7 +281,7 @@ $ school_night_hours_sleep &lt;chr&gt; "8", "6", "&lt;5", "6", "9", "8", "9", "6
 <li><code>school_night_hours_sleep</code>: Qualitative, categorical. Encoded <chr>, to be mutated</chr></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelA)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -601,11 +497,11 @@ $ school_night_hours_sleep &lt;chr&gt; "8", "6", "&lt;5", "6", "9", "8", "9", "6
 </ul>
 <p>There is missing data.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="ot">&lt;-</span> PanelA <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">gender =</span> <span class="fu">as.factor</span>(gender),</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade =</span> <span class="fu">as.factor</span>(grade),</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">school_night_hours_sleep =</span> <span class="fu">as.factor</span>(school_night_hours_sleep))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(A_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="ot">&lt;-</span> PanelA <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">gender =</span> <span class="fu">as.factor</span>(gender),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade =</span> <span class="fu">as.factor</span>(grade),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">school_night_hours_sleep =</span> <span class="fu">as.factor</span>(school_night_hours_sleep))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(A_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 13,583
 Columns: 8
@@ -653,35 +549,35 @@ $ school_night_hours_sleep &lt;fct&gt; 8, 6, &lt;5, 6, 9, 8, 9, 6, &lt;5, &lt;5,
 <li>Which grade has the most students??</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span> (<span class="sc">~</span> grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span> (<span class="sc">~</span> grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="2" type="1">
 <li>What is the sex distribution among the grades?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>(<span class="sc">~</span>grade, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>(<span class="sc">~</span>grade, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="3" type="1">
 <li>Do boys strength train more than girls?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_histogram</span>(<span class="sc">~</span> strength_training_7d, <span class="at">fill =</span> <span class="sc">~</span>gender, <span class="at">bins =</span> <span class="dv">1</span>, <span class="at">position =</span> <span class="st">"dodge"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_histogram</span>(<span class="sc">~</span> strength_training_7d, <span class="at">fill =</span> <span class="sc">~</span>gender, <span class="at">bins =</span> <span class="dv">1</span>, <span class="at">position =</span> <span class="st">"dodge"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_density</span>(<span class="sc">~</span> strength_training_7d, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_density</span>(<span class="sc">~</span> strength_training_7d, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="4" type="1">
 <li>Do girls have better school night sleep than boys?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>(<span class="sc">~</span> gender, <span class="at">fill =</span> <span class="sc">~</span>school_night_hours_sleep)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>(<span class="sc">~</span> gender, <span class="at">fill =</span> <span class="sc">~</span>school_night_hours_sleep)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>5. Are heavier students more physically active, does it differ between boys and girls?</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gf_point</span>(weight <span class="sc">~</span> physically_active_7d, <span class="at">color=</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gf_point</span>(weight <span class="sc">~</span> physically_active_7d, <span class="at">color=</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 1207 rows containing missing values or values outside the scale range
 (`geom_point()`).</code></pre>
@@ -689,7 +585,7 @@ $ school_night_hours_sleep &lt;fct&gt; 8, 6, &lt;5, 6, 9, 8, 9, 6, &lt;5, &lt;5,
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -698,35 +594,35 @@ $ school_night_hours_sleep &lt;fct&gt; 8, 6, &lt;5, 6, 9, 8, 9, 6, &lt;5, &lt;5,
 <li>How does height differ between boys and girls?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_histogram</span>(<span class="sc">~</span>height, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_histogram</span>(<span class="sc">~</span>height, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_density</span>(<span class="sc">~</span> height, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_density</span>(<span class="sc">~</span> height, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="7" type="1">
 <li>Does grade affect how physically active students are, and does it differ between boys and girls?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span>  <span class="fu">filter</span>(gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>grade, <span class="at">y =</span> <span class="sc">~</span>physically_active_7d, <span class="at">fill =</span> <span class="sc">~</span>gender) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span>  <span class="fu">filter</span>(gender <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>grade, <span class="at">y =</span> <span class="sc">~</span>physically_active_7d, <span class="at">fill =</span> <span class="sc">~</span>gender) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="8" type="1">
 <li>Do heavier students (like me) tend to be in higher grades?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>weight, <span class="at">y =</span> <span class="sc">~</span>grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>weight, <span class="at">y =</span> <span class="sc">~</span>grade)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="9" type="1">
 <li>Do older students sleep less on school nights, and does it differ between boys and girls?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span>  <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>school_night_hours_sleep, <span class="at">y =</span> <span class="sc">~</span>age, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span>  <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>school_night_hours_sleep, <span class="at">y =</span> <span class="sc">~</span>age, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="10" type="1">
 <li>Do students who are more physically active also strength train more?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_point</span>( strength_training_7d <span class="sc">~</span>physically_active_7d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>A_mod <span class="sc">%&gt;%</span> <span class="fu">gf_point</span>( strength_training_7d <span class="sc">~</span>physically_active_7d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="say" class="level3">
@@ -746,9 +642,9 @@ $ school_night_hours_sleep &lt;fct&gt; 8, 6, &lt;5, 6, 9, 8, 9, 6, &lt;5, &lt;5,
 <section id="see-the-table-1" class="level3">
 <h3 class="anchored" data-anchor-id="see-the-table-1">1. See the table</h3>
 <p>What is a case? Which columns are Quant / Qual? What is missing?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelB)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelB)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 13,583
 Columns: 8
@@ -775,7 +671,7 @@ $ hours_tv_per_school_day &lt;chr&gt; "5+", "5+", "5+", "2", "3", "5+", "5+", "5
 <li><code>hours_tv_per_school_day</code>: Qualitative, categorical. Encoded <chr>, to be mutated</chr></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelB)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelB)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -978,10 +874,10 @@ $ hours_tv_per_school_day &lt;chr&gt; "5+", "5+", "5+", "2", "3", "5+", "5+", "5
 <li><code>age</code> has a mean of 16.15, sd of 1.26, median of 16.00, min of 12.00, and max of 18.00</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="ot">&lt;-</span> PanelB <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">gender =</span> <span class="fu">as.factor</span>(gender),</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade =</span> <span class="fu">as.factor</span>(grade), <span class="at">hispanic =</span> <span class="fu">as.factor</span>(hispanic), <span class="at">race =</span> <span class="fu">as.factor</span>(race), <span class="at">helmet_12m =</span> <span class="fu">as.factor</span>(helmet_12m), <span class="at">text_while_driving_30d =</span> <span class="fu">as.factor</span>(text_while_driving_30d), <span class="at">hours_tv_per_school_day =</span> <span class="fu">as.factor</span>(hours_tv_per_school_day)) </span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(B_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="ot">&lt;-</span> PanelB <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">gender =</span> <span class="fu">as.factor</span>(gender),</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">grade =</span> <span class="fu">as.factor</span>(grade), <span class="at">hispanic =</span> <span class="fu">as.factor</span>(hispanic), <span class="at">race =</span> <span class="fu">as.factor</span>(race), <span class="at">helmet_12m =</span> <span class="fu">as.factor</span>(helmet_12m), <span class="at">text_while_driving_30d =</span> <span class="fu">as.factor</span>(text_while_driving_30d), <span class="at">hours_tv_per_school_day =</span> <span class="fu">as.factor</span>(hours_tv_per_school_day)) </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(B_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 13,583
 Columns: 8
@@ -1015,22 +911,22 @@ $ hours_tv_per_school_day &lt;fct&gt; 5+, 5+, 5+, 2, 3, 5+, 5+, 5+, 5+, do not w
 <p>Geom, map mark, or (later) test that matches the pair type. Name it before you code.</p>
 <p>Bar Graph Box Plot Mosaic Charts</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(grade <span class="sc">~</span> gender , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(grade <span class="sc">~</span> gender , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(grade <span class="sc">~</span> gender , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>(<span class="at">type =</span> <span class="st">"expected"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(grade <span class="sc">~</span> gender , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>(<span class="at">type =</span> <span class="st">"expected"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(grade <span class="sc">~</span> gender, <span class="at">data =</span> B_mod) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(grade <span class="sc">~</span> gender, <span class="at">data =</span> B_mod) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>(<span class="at">type =</span> <span class="st">"expected"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>(<span class="at">type =</span> <span class="st">"expected"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="predict-1" class="level3">
@@ -1043,11 +939,21 @@ $ hours_tv_per_school_day &lt;fct&gt; 5+, 5+, 5+, 2, 3, 5+, 5+, 5+, 5+, do not w
 <li>Do boys or girls text while driving more?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>( <span class="sc">~</span>text_while_driving_30d, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>( <span class="sc">~</span>text_while_driving_30d, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>2. Do boys or girls skip helmets more?</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>( <span class="sc">~</span>helmet_12m, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="sc">%&gt;%</span> <span class="fu">gf_bar</span>( <span class="sc">~</span>helmet_12m, <span class="at">fill =</span> <span class="sc">~</span>gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1057,7 +963,8 @@ $ hours_tv_per_school_day &lt;fct&gt; 5+, 5+, 5+, 2, 3, 5+, 5+, 5+, 5+, do not w
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>(<span class="at">type =</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                                                                      <span class="st">"expected"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1066,22 +973,11 @@ $ hours_tv_per_school_day &lt;fct&gt; 5+, 5+, 5+, 2, 3, 5+, 5+, 5+, 5+, do not w
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(gender <span class="sc">~</span> helmet_12m , <span class="at">data =</span> B_mod) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>(<span class="at">type =</span> </span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                                                                      <span class="st">"expected"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
 <ol start="3" type="1">
 <li>Are the students who text while driving older?</li>
 </ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>age, <span class="at">y =</span><span class="sc">~</span>text_while_driving_30d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>B_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>age, <span class="at">y =</span><span class="sc">~</span>text_while_driving_30d)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="say-1" class="level3">
@@ -1101,17 +997,17 @@ $ hours_tv_per_school_day &lt;fct&gt; 5+, 5+, 5+, 2, 3, 5+, 5+, 5+, 5+, do not w
 <p><em>Same file as Group 3 C. Different question. lifeExp vs gdpPercap, or pop as symbol size.</em></p>
 <p>Geometry is not in the CSV. Join in R, then use the same seven headings.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sf)</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(rnaturalearth)</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co"># world &lt;- ne_countries(scale = "medium", returnclass = "sf")</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># # join on country name; list the unmatched labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># library(sf)</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># library(rnaturalearth)</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># world &lt;- ne_countries(scale = "medium", returnclass = "sf")</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># # join on country name; list the unmatched labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="see-the-table-2" class="level3">
 <h3 class="anchored" data-anchor-id="see-the-table-2">1. See the table</h3>
 <p>What is a case? Which columns are Quant / Qual? What is missing?</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse() / inspect() / skim()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 142
 Columns: 6
@@ -1134,7 +1030,7 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <li><p><code>continent</code>: Qualitative, categorical. Encoded <chr>, to be mutated</chr></p></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(PanelC)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -1325,9 +1221,9 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </ul>
 <p>There is NO missing data. We are good to mutate.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="ot">&lt;-</span> PanelC <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">country =</span> <span class="fu">as.factor</span>(country), <span class="at">continent =</span> <span class="fu">as.factor</span>(continent)) </span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(C_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="ot">&lt;-</span> PanelC <span class="sc">|&gt;</span>  <span class="fu">mutate</span>( <span class="at">country =</span> <span class="fu">as.factor</span>(country), <span class="at">continent =</span> <span class="fu">as.factor</span>(continent)) </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(C_mod)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 142
 Columns: 6
@@ -1345,16 +1241,24 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <p>One question <em>this</em> table can answer. One it cannot. Write both.</p>
 <p>Looking at the overall Spine statement, I can pose the following Questions:</p>
 <ol type="1">
-<li>Which continents have the highest GDP per capita?</li>
-<li>Which continents have the largest populations?</li>
-<li>Does life expectancy vary across continents?</li>
-<li>Has GDP per capita changed over the years?</li>
-<li>Has life expectancy improved over the years?</li>
+<li><p>Which continents have the highest GDP per capita?</p></li>
+<li><p>Which continents have the largest total populations?</p></li>
+<li><p>Does life expectancy vary across continents?</p></li>
+<li><p>Which countries have the highest and lowest life expectancy?</p></li>
+<li><p>Is higher GDP per capita associated with higher life expectancy?</p></li>
+<li><p>Do countries with larger populations tend to have lower life expectancy?</p></li>
+</ol>
+<p>Possibly cannot be answered:</p>
+<ol type="1">
+<li><p>Has GDP per capita changed over the years?</p></li>
+<li><p>Has life expectancy improved over the years?</p></li>
+<li><p>Does having a higher GDP per capita cause people to live longer?</p></li>
 </ol>
 </section>
 <section id="choose-a-mark-2" class="level3">
 <h3 class="anchored" data-anchor-id="choose-a-mark-2">3. Choose a mark</h3>
-<p>Geom, map mark, or (later) test that matches the pair type. Name it before you code. d Box Plot Scatter Plot</p>
+<p>Geom, map mark, or (later) test that matches the pair type. Name it before you code.</p>
+<p>Box Plot Scatter Plot World Map</p>
 </section>
 <section id="predict-2" class="level3">
 <h3 class="anchored" data-anchor-id="predict-2">4. Predict</h3>
@@ -1363,8 +1267,28 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <section id="make-2" class="level3">
 <h3 class="anchored" data-anchor-id="make-2">5. Make</h3>
 <p>Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.</p>
+<ol type="1">
+<li>Which continents have the highest GDP per capita?</li>
+</ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>gdpPercap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>gdpPercap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Which continents have the largest total populations?</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a> C_pop <span class="ot">&lt;-</span> C_mod <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(continent) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_pop =</span> <span class="fu">sum</span>(pop, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>C_pop <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>total_pop) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1373,8 +1297,11 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </div>
 </div>
 </div>
+<ol start="3" type="1">
+<li>Does life expectancy vary across continents?</li>
+</ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>pop) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>lifeExp) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1383,8 +1310,17 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </div>
 </div>
 </div>
+<ol start="4" type="1">
+<li>Which countries have the highest and lowest life expectancy?</li>
+</ol>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_boxplot</span>(<span class="at">x =</span> <span class="sc">~</span>continent, <span class="at">y =</span> <span class="sc">~</span>lifeExp) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">&lt;-</span> rnaturalearth<span class="sc">::</span><span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>world_selected <span class="ot">&lt;-</span> world <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(name, geometry)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>C_new <span class="ot">&lt;-</span> C_mod <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(world_selected, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span> <span class="ot">=</span> <span class="st">"name"</span>))</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>world <span class="sc">%&gt;%</span> ggformula<span class="sc">::</span><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span>geometry)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1392,13 +1328,11 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </figure>
 </div>
 </div>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>C_mod <span class="sc">%&gt;%</span> <span class="fu">gf_point</span>(<span class="at">x =</span> <span class="sc">~</span>year, <span class="at">y =</span> <span class="sc">~</span>gdpPercap)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_sf</span>(<span class="at">geometry =</span> <span class="sc">~</span> geometry, <span class="at">data =</span> C_new, <span class="at">fill =</span> <span class="sc">~</span>pop)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1426,78 +1360,147 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 </section>
 <section id="panel-d-the-hinkley-case" class="level1">
 <h1>Panel D — The Hinkley Case</h1>
-<p>Based on the movie <em>Erin Brokovich</em></p>
+<p>In 1993, <strong>Erin Brokovich</strong> stumbled upon a case that would become one of the largest class action lawsuits in American history.</p>
+<p>Pacific Gas and Electric PG &amp; E had been leaking Chromium 6, a toxic chemical into the groundwater of Hinkley, a small desert community in California.</p>
+<p>Residents were getting sick and no one was connecting the dots. Erin did.</p>
+<p>This map traces the story on the ground: the PG&amp;E compressor facility, the Chromium-6 contamination plume spreading through the aquifer, the groundwater flow, and the homes of the families whose lives were quietly being destroyed.</p>
 <section id="setting-up" class="level3">
 <h3 class="anchored" data-anchor-id="setting-up">1. Setting Up</h3>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ forcats   1.0.1     ✔ stringr   1.6.0
-✔ lubridate 1.9.5     ✔ tibble    3.3.1
-✔ purrr     1.2.1     ✔ tidyr     1.3.2
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ mosaic::count() masks dplyr::count()
-✖ purrr::cross()  masks mosaic::cross()
-✖ mosaic::do()    masks dplyr::do()
-✖ tidyr::expand() masks Matrix::expand()
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-✖ tidyr::pack()   masks Matrix::pack()
-✖ mosaic::stat()  masks ggplot2::stat()
-✖ mosaic::tally() masks dplyr::tally()
-✖ tidyr::unpack() masks Matrix::unpack()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.14.1, GDAL 3.12.1, PROJ 9.7.1; sf_use_s2() is TRUE</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet.providers) <span class="co"># Base Map tile providers</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet.extras) <span class="co"># leaflet frills and thrills</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Data</span></span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata) <span class="co"># Import OSM Vector Data into R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
-connected to: https://overpass-api.de/api/interpreter</code></pre>
-</div>
-</div>
 </section>
 <section id="playing-with-maps" class="level3">
 <h3 class="anchored" data-anchor-id="playing-with-maps">2. Playing with Maps</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add default OpenStreetMap map tiles</span></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set view to be roughly centred on Hinkley, CA,USA</span></span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.1990</span>, <span class="at">lat =</span> <span class="fl">34.9300</span>, <span class="at">zoom =</span> <span class="fl">13.4</span>)</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a> h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-bb091683e4226d602d9d" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-bb091683e4226d602d9d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]}],"setView":[[34.93,-117.199],13.4,[]]},"evals":[],"jsHooks":[]}</script>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set view to be roughly centred on Hinkley, CA,USA</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>   <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.18937683138594</span>, <span class="at">lat =</span> <span class="fl">34.919081905328625</span>, <span class="at">zoom =</span> <span class="fl">13.4</span>)</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a> h</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>map_esri_imagery <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.1990</span>, <span class="at">lat =</span> <span class="fl">34.9300</span>, <span class="at">zoom =</span> <span class="fl">13.4</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addProviderTiles</span>(<span class="st">"Esri.WorldImagery"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addCircleMarkers</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.1990</span>,</span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">lat =</span> <span class="fl">34.9300</span>,</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">radius =</span> <span class="dv">5</span>,</span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">color =</span> <span class="st">"brown"</span>,</span>
-<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fillOpacity =</span> <span class="dv">1</span>,</span>
-<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">label =</span> <span class="st">"Hinkley, CA"</span>)</span>
-<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>map_esri_imagery</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>map_esri_imagery <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.18937683138594</span>, <span class="at">lat =</span> <span class="fl">34.919081905328625</span>, <span class="at">zoom =</span> <span class="dv">13</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>          ) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">addProviderTiles</span>(<span class="st">"Esri.WorldImagery"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>     <span class="fu">addCircleMarkers</span> (<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.1990</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">lat =</span> <span class="fl">34.9300</span>,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">radius =</span> <span class="dv">5</span>,</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">color =</span> <span class="st">"brown"</span>,</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>                     <span class="at">fillOpacity =</span> <span class="dv">1</span>,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">label =</span> <span class="st">"Hinkley, CA"</span>)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>map_esri_imagery </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>h <span class="sc">%&gt;%</span> <span class="fu">addMarkers</span>(</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.1622383607778</span>, <span class="at">lat =</span> <span class="fl">34.90374722777231</span>,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">popup =</span> <span class="st">"Pacific Gas and Electric (PG &amp; E) Company"</span> </span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>h <span class="sc">%&gt;%</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">addCircles</span>(</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span>  <span class="sc">-</span><span class="fl">117.18937683138594</span>,</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fl">34.919081905328625</span>,</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">4500</span>, </span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"yellow"</span>,</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">3</span>, </span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="st">"red"</span></span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.18937683138594</span>, <span class="at">lat =</span> <span class="fl">34.919081905328625</span>, <span class="at">zoom =</span> <span class="dv">13</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addRectangles</span>(</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat1 =</span> <span class="fl">34.9050</span>, <span class="at">lng1 =</span> <span class="sc">-</span><span class="fl">117.22524624156321</span>,</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat2 =</span> <span class="fl">34.9600</span>, <span class="at">lng2 =</span> <span class="sc">-</span><span class="fl">117.13746251715695</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.18937683138594</span>, <span class="at">lat =</span> <span class="fl">34.919081905328625</span>, <span class="at">zoom =</span> <span class="dv">12</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.26379965144292</span>, <span class="sc">-</span><span class="fl">117.11855776559129</span>, <span class="sc">-</span><span class="fl">117.14402382941634</span>, <span class="sc">-</span><span class="fl">117.22217000652593</span>),</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">34.95749774996647</span>, <span class="fl">34.93752074954549</span>, <span class="fl">34.882027322658615</span>, <span class="fl">34.88735462976936</span>)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="the-final-map" class="level3">
+<h3 class="anchored" data-anchor-id="the-final-map">3. The Final Map</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>hinkley_map <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.18937683138594</span>, <span class="at">lat =</span> <span class="fl">34.919081905328625</span>, <span class="at">zoom =</span> <span class="dv">13</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Hinkley area boundary</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>(</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.22470796056894</span>, <span class="sc">-</span><span class="fl">117.145817921965</span>, <span class="sc">-</span><span class="fl">117.14271734585267</span>, <span class="sc">-</span><span class="fl">117.21113496405178</span>),</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">34.94412761049036</span>, <span class="fl">34.93621954324678</span>, <span class="fl">34.89112358375753</span>, <span class="fl">34.89344061852938</span>),</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>,</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">2</span>,</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">FALSE</span> </span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># PG&amp;E marker</span></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addMarkers</span>(</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.1622383607778</span>, </span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fl">34.90374722777231</span>,</span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">popup =</span> <span class="st">"PG &amp; E : Providing water and cancer and hexavalent chromium to residents since 1952."</span></span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Groundwater</span></span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircles</span>(</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="sc">-</span><span class="fl">117.18937683138594</span>,</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fl">34.919081905328625</span>,</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">3300</span>,</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="fl">0.5</span>,</span>
+<span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb56-30"><a href="#cb56-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="st">"blue"</span>, <span class="at">popup =</span> <span class="st">"groundwater"</span></span>
+<span id="cb56-31"><a href="#cb56-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span>                          </span>
+<span id="cb56-32"><a href="#cb56-32" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-33"><a href="#cb56-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Contamination plume</span></span>
+<span id="cb56-34"><a href="#cb56-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircles</span>(</span>
+<span id="cb56-35"><a href="#cb56-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.1622</span>, <span class="sc">-</span><span class="fl">117.1680</span>, <span class="sc">-</span><span class="fl">117.1750</span>, <span class="sc">-</span><span class="fl">117.1820</span>, <span class="sc">-</span><span class="fl">117.1894</span>, <span class="sc">-</span><span class="fl">117.2050</span>),</span>
+<span id="cb56-36"><a href="#cb56-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">34.9037</span>, <span class="fl">34.9060</span>, <span class="fl">34.9100</span>, <span class="fl">34.9150</span>, <span class="fl">34.9191</span>, <span class="fl">34.9280</span>),</span>
+<span id="cb56-37"><a href="#cb56-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="fu">c</span>(<span class="dv">300</span>, <span class="dv">450</span>, <span class="dv">600</span>, <span class="dv">750</span>, <span class="dv">900</span>, <span class="dv">1200</span>),</span>
+<span id="cb56-38"><a href="#cb56-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"brown"</span>,</span>
+<span id="cb56-39"><a href="#cb56-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">weight =</span> <span class="dv">1</span>,</span>
+<span id="cb56-40"><a href="#cb56-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="st">"orange"</span>,</span>
+<span id="cb56-41"><a href="#cb56-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.15</span>,</span>
+<span id="cb56-42"><a href="#cb56-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"Chromium-6 Contamination Plume"</span></span>
+<span id="cb56-43"><a href="#cb56-43" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span>                          </span>
+<span id="cb56-44"><a href="#cb56-44" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb56-45"><a href="#cb56-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Hinkley residents</span></span>
+<span id="cb56-46"><a href="#cb56-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(</span>
+<span id="cb56-47"><a href="#cb56-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">lng =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">117.20203292072142</span>, <span class="sc">-</span><span class="fl">117.17925890572414</span>, <span class="sc">-</span><span class="fl">117.19772687683383</span>),</span>
+<span id="cb56-48"><a href="#cb56-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">34.92896619928256</span>, <span class="fl">34.907178991393415</span>, <span class="fl">34.9219608916045</span>),</span>
+<span id="cb56-49"><a href="#cb56-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">radius =</span> <span class="dv">6</span>,</span>
+<span id="cb56-50"><a href="#cb56-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>,</span>
+<span id="cb56-51"><a href="#cb56-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillColor =</span> <span class="st">"red"</span>,</span>
+<span id="cb56-52"><a href="#cb56-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">fillOpacity =</span> <span class="fl">0.8</span>,</span>
+<span id="cb56-53"><a href="#cb56-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">popup =</span> <span class="fu">c</span>(</span>
+<span id="cb56-54"><a href="#cb56-54" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Donna Jensen - Children were playing in contaminated water, first family Erin visited"</span>,</span>
+<span id="cb56-55"><a href="#cb56-55" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Pete Goya - Hinkley resident affected by Chromium-6"</span>,</span>
+<span id="cb56-56"><a href="#cb56-56" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Roberta Walker - Key community member who worked with Erin"</span></span>
+<span id="cb56-57"><a href="#cb56-57" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb56-58"><a href="#cb56-58" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb56-59"><a href="#cb56-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-60"><a href="#cb56-60" aria-hidden="true" tabindex="-1"></a>hinkley_map</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-2f6b2a6f511427766fed" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-2f6b2a6f511427766fed">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[34.93,-117.199],13.4,[]],"calls":[{"method":"addProviderTiles","args":["Esri.WorldImagery",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[34.93,-117.199,5,null,null,{"interactive":true,"className":"","stroke":true,"color":"brown","weight":5,"opacity":0.5,"fill":true,"fillColor":"brown","fillOpacity":1},null,null,null,null,"Hinkley, CA",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[34.93,34.93],"lng":[-117.199,-117.199]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-133c5c0cc8aea0c91eae" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-133c5c0cc8aea0c91eae">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.2247079605689,-117.145817921965,-117.1427173458527,-117.2111349640518],"lat":[34.94412761049036,34.93621954324678,34.89112358375753,34.89344061852938]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[34.90374722777231,-117.1622383607778,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG & E : Providing water and cancer and hexavalent chromium to residents since 1952.",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[34.91908190532862,-117.1893768313859,3300,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":0.5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},"groundwater",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[34.9037,34.906,34.91,34.915,34.9191,34.928],[-117.1622,-117.168,-117.175,-117.182,-117.1894,-117.205],[300,450,600,750,900,1200],null,null,{"interactive":true,"className":"","stroke":true,"color":"brown","weight":1,"opacity":0.5,"fill":true,"fillColor":"orange","fillOpacity":0.15},null,null,"Chromium-6 Contamination Plume",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircleMarkers","args":[[34.92896619928256,34.90717899139342,34.9219608916045],[-117.2020329207214,-117.1792589057241,-117.1977268768338],6,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.8},null,null,["Donna Jensen - Children were playing in contaminated water, first family Erin visited","Pete Goya - Hinkley resident affected by Chromium-6","Roberta Walker - Key community member who worked with Erin"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.91908190532862,-117.1893768313859],13,[]],"limits":{"lat":[34.89112358375753,34.94412761049036],"lng":[-117.2247079605689,-117.1427173458527]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sessionInfo()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sessionInfo()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
