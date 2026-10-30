@@ -916,7 +916,7 @@ hinkley_map
 
 # Panel E — Found Data
 
-**Authors: Shivgun, Ishita, Rachana**
+**Authors: Shivgun, Ishita, Rachana** 
 
 
 ## Our Hunch: AI Belief Among Art and Design Students
