@@ -1,6 +1,6 @@
 ---
-title: "Group 4 — Youth risk"
-subtitle: "Studio wall"
+title: "Wall of Quantified Surprises"
+subtitle: "FOSEDA studio wall - Bodies, Habits and the World"
 author: "Shivgun"
 format:
   html:
@@ -58,9 +58,7 @@ Found tables train the mark. A campus Free Hunch, if we collect one, is a **made
 
 # Panel A — body / measure
 
-*height, weight, physically_active_7d, school_night_hours_sleep are Quant. grade is Qual.*\
-
-
+*height, weight, physically_active_7d, school_night_hours_sleep are Quant. grade is Qual.*
 
 
 ### 1. See the table
@@ -126,19 +124,30 @@ One question *this* table can answer. One it cannot. Write both.
 Looking at the overall Spine statement, I can pose the following Questions:
 
 1. Which grade has the most students?
+
 2. What is the gender distribution across the grades? 
+
 3. Do boys strength train more than girls?
+
 4. Do girls have better school night sleep than boys?
+
 **5. Are heavier students more physically active, does it differ between boys and girls?**
+
 6. How does height differ between boys and girls?
+
 7. Does grade affect how physically active students are,and does it differ between boys and girls?
+
 8. Do heavier students (like me) tend to be in higher grades?
+
 9. Do older students sleep less on school nights, and does it differ between boys and girls?
+
 10.Do students who are more physically active also strength train more?
 
 Possibly cannot answer:
 1. Why do some students sleep less than 5 hours on school nights?
+
 2. Does the sleep depend on the professor's/teacher's class they have on the next day?
+
 3. Does their weight depend on the items served in mess/tiffins? 
 
 
@@ -473,7 +482,7 @@ Geometry is not in the CSV. Join in R, then use the same seven headings.
 
 ### 1. See the table
 
-Authors: Anmol, Sadiya, Shivgun
+**Authors: Anmol, Sadiya, Shivgun**
 
 
 
@@ -907,7 +916,7 @@ hinkley_map
 
 # Panel E — Found Data
 
-Authors: Ishita, Rachana, Shivgun
+**Authors: Shivgun, Ishita, Rachana**
 
 
 ## Our Hunch: AI Belief Among Art and Design Students
@@ -980,19 +989,19 @@ mosaic::xchisq.test(AI_belief ~ program, data = AI)
 ```
 
 ```{r}
-mosaic::xchisq.test(AI_belief ~ program, data = AI)
 mosaic::xchisq.test(AI_belief ~ gender, data = AI)
 ```
 
 
 ### 6. Say
 
-Design students and boys are more likely to believe in AI, but the real split is within art, where girls are skeptical and boys are almost evenly divided.
-
+Gender, not program, drives AI belief. Boys believe significantly more than girls regardless of whether they study art or design.
 
 ### 7. Limit
 
 “Belief” means something different to each student. One person might say yes because AI exists and they use it daily; another might say no because they’re thinking about ethics or environmental cost.
+
+
 
 
 
@@ -1056,7 +1065,7 @@ Guys are more likely to have greater pocket money allowance than girls.
 ### 5. Make
 
 ```{r}
-gf_histogram( ~allowance,fill = ~gender, data = allowance) 
+gf_density( ~allowance,fill = ~gender, data = allowance) 
 ```
 
 
@@ -1066,13 +1075,21 @@ gf_boxplot( x = ~gender, y = ~allowance, data = allowance)
 
 ```
 
+```{r}
+mosaic::t_test(allowance ~ gender, data = allowance)
+```
+
 
 ### 6. Say
 
-Contrary to our prediction, girls in our sample report equal or slightly higher pocket money allowance than boys, with one girl reporting an unusually high allowance of around 40k.
+Contrary to our prediction, girls in our sample report a slightly higher pocket money allowance than boys, but the difference is not statistically significant. 
 
 
 ### 7. Limit 
+
+One girl reported an unusually high allowance of around 40k, which likely pulls the female mean up.
+
+
 
 
 
@@ -1123,7 +1140,7 @@ Does personality type differ between MIT and SMI students?
 
 ### 3. Choose a mark 
 
-Mosaic chart 
+Bar graph 
 
 
 ### 4. Predict 
@@ -1142,6 +1159,8 @@ gf_bar( ~mbti.type, fill = ~department, data = mbti)
 
 
 ### 7. Limit 
+
+
 
 
 
@@ -1183,10 +1202,91 @@ bfgf <- panelE_bfgf |>  mutate(department = as.factor(department), relationship_
 glimpse(bfgf)
 ```
 
+### 2. Ask 
+
+Are SMI students more likely to have a boyfriend or girlfriend than MIT students?
+
+
+### 3. Choose a mark 
+
+Bar Chart
+Mosaic chart 
+
+
+### 4. Predict 
+
+SMI students are more likely to be in a relationship or if I may, a situationship than MIT students.
+
+
+### 5. Make
+
+```{r}
+gf_bar( ~department, fill = ~relationship_status, data = bfgf)
+```
+
+
+```{r}
+vcd::structable(relationship_status ~ department, data = bfgf) %>%  vcd::mosaic() 
+```
+
+```{r}
+mosaic::xchisq.test( relationship_status ~department, data = bfgf)
+```
+
+### 6. Say
+
+SMI and MIT students are nearly identical in relationship status, but contrary to expectations, SMI students are marginally less likely to be in a relationship than their engineering counterparts. 
+
+The stereotype of the romantic art student may need revision.
+
+### 7. Limit 
+
+With p = 1 and X-squared = 0, the one person difference between 13 MIT and 12 SMI students saying yes is no more meaningful than a coin landing heads one extra time.
+
+
+
+
+
+## Tattoos: Do tattoos make people look attractive or not?
+
+```{r}
+#| label: inspect-panelE_tattoo-data-1
+dplyr::glimpse(panelE_tattoo)
+```
+
+My PanelE_tattoo data has:
+
+  - 60 observations and 03 variables.
+  - `gender`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `Has_tattoos.`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `Opinion`: Qualitative, categorical. Encoded <chr>, to be mutated
+  
+```{r}
+#| label: inspect-panelE_tattoo-data-2
+skimr::skim(panelE_tattoo)
+```
+
+Furthermore, on the Qual variables panel-E-tattoo data has : 
+
+- `Gender` has 2 levels 
+- `Has_tatoos.` has 2 levels
+- `Opinion` also has 2 levels 
+
+There is NO missing data. We are good to mutate
+
+```{r}
+#| label: mutate-panelE_tattoo-factors
+
+tto <- panelE_tattoo |>  mutate(Gender = as.factor(Gender), Has_tattoos. = as.factor(Has_tattoos.), Opinion = as.factor(Opinion))
+
+glimpse(tto)
+```
+
 
 ### 2. Ask 
 
-Does personality type differ between MIT and SMI students?
+Are tattooed people more likely to find tattoos attractive, and does this differ by gender?
+
 
 ### 3. Choose a mark 
 
@@ -1195,7 +1295,38 @@ Mosaic chart
 
 ### 4. Predict 
 
-SMI students are more likely to be introverted than MIT students.
+People who have tattoos are more likely to find tattoos attractive on others. Girls probably will find tattoos attractive the boys overall. 
+
+
+### 5. Make 
+
+```{r}
+ vcd::structable(Opinion ~ Has_tattoos. + Gender , data = tto) %>% vcd::mosaic() 
+```
+
+```{r}
+mosaic::xchisq.test(Opinion ~ Gender, data = tto)
+
+```
+
+
+```{r}
+mosaic::xchisq.test(Opinion ~ Has_tattoos. , data = tto)
+
+```
+
+
+### 6. Say
+
+Neither having tattoos nor being female makes you more likely to find tattoos attractive. Opinion on tattoo attractiveness is evenly split regardless of gender or tattoo status.
+
+### 7. Limit 
+
+
+
+
+
+
 
 
 
