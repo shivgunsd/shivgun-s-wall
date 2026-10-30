@@ -1,7 +1,7 @@
 ---
 title: "Group 4 — Youth risk"
 subtitle: "Studio wall"
-author: "Shivgun and gang"
+author: "Shivgun"
 format:
   html:
     toc: true
@@ -22,7 +22,7 @@ This folder is ours for the ten days. Three tables, three shapes.
 - **Panel B** (`panel-B.csv`) — YRBSS Quals: helmet, texting while driving, TV, race, gender, grade. Same survey, different columns.
 - **Panel C** (`panel-C.csv`) — gapminder 2007 world. Ask a *different* map question than Group 3 (wealth, population symbols, continent).
 - **Panel D** (`Erin Brokovich`) - A map of Hinkley, CA, USA 
-- **Panel E** (`Primary Research`) - Hunch question 
+- **Panel E** (`Primary Research`) - Found Data (Hunches)
 
 A and B are the same teenagers cut two ways. Do not mix them into one dishonest figure.
 
@@ -45,6 +45,12 @@ library(broom) # (NEW!!) for clean stat outputs
 PanelA <- read.csv(file = "data/panel-A.csv")
 PanelB <- read.csv(file = "data/panel-B.csv")
 PanelC <- read.csv(file = "data/panel-C.csv")
+panelE_AI <- read.csv(file = "data/panel-E-AI.csv")
+panelE_tattoo <- read.csv(file = "data/panel-E-tattoo.csv")
+panelE_allowance <- read.csv(file = "data/panel-E-allowance.csv")
+panelE_bfgf <- read.csv(file = "data/panel-E-bfgf.csv")
+panelE_mbti <- read.csv(file = "data/panel-E-mbti.csv")
+
 
 ```
 
@@ -61,9 +67,6 @@ Found tables train the mark. A campus Free Hunch, if we collect one, is a **made
 
 What is a case? Which columns are Quant / Qual? What is missing?
 
-```r
-# glimpse() / inspect() / skim()
-```
 
 ```{r}
 #| label: inspect-panelA-data-1
@@ -282,9 +285,7 @@ This panel can't say anything about fitness or body composition, since weight al
 
 What is a case? Which columns are Quant / Qual? What is missing?
 
-```r
-# glimpse() / inspect() / skim()
-```
+
 ```{r}
 #| label: inspect-panelB-data-1
 dplyr::glimpse(PanelB)
@@ -306,7 +307,7 @@ My PanelB data has:
 #| label: inspect-panelB-data-2
 skimr::skim(PanelB)
 ```
-Furthermore, on the Qual variables panel-A data has : 
+Furthermore, on the Qual variables panel-B data has : 
 
 - `gender` has 3 levels: 
 - `grade` has 6 levels: 
@@ -316,7 +317,7 @@ Furthermore, on the Qual variables panel-A data has :
 - `text_while_driving_30d` has 9 levels:
 - `hours_tv_per_school_day` has 8 levels:
 
-And on the Quant variables panel-A data has :
+And on the Quant variables panel-B data has :
 
 - `age` has a mean of 16.15, sd of 1.26, median of 16.00, min of 12.00, and max of 18.00
 
@@ -344,8 +345,6 @@ Possibly cannot answer:
 
 1. Why do some students never wear a helmet?
 2. Do students who text while driving have more crashes?
-
-
 
 
 ### 3. Choose a mark
@@ -401,6 +400,7 @@ mosaic::xchisq.test(gender ~ helmet_12m , data = B_mod)
 
 What do we think we will see? One sentence, before Run.
 I think more boys would likely skip wearing helmets. 
+
 
 ### 5. Make
 
@@ -473,11 +473,10 @@ Geometry is not in the CSV. Join in R, then use the same seven headings.
 
 ### 1. See the table
 
-What is a case? Which columns are Quant / Qual? What is missing?
+Authors: Anmol, Sadiya, Shivgun
 
-```r
-# glimpse() / inspect() / skim()
-```
+
+
 ```{r}
 #| label: inspect-panelC-data-1
 dplyr::glimpse(PanelC)
@@ -903,6 +902,301 @@ hinkley_map
 
 
 ```
+
+
+
+# Panel E — Found Data
+
+Authors: Ishita, Rachana, Shivgun
+
+
+## Our Hunch: AI Belief Among Art and Design Students
+
+We collected data from across the Srishti Manipal campus. Our sample size for this was n = 60, which consisted of 30 art/BFa students and 30 design/BDes students, which included equal number of boys and girls.
+
+
+### 1. See the table
+ 
+```{r}
+#| label: inspect-panelE_AI-data-1
+dplyr::glimpse(panelE_AI)
+
+```
+
+My PanelE_AI data has:
+
+  - 60 observations and 03 variables.
+  - `program`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `gender`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `AI_belief`: Qualitative, categorical. Encoded <chr>, to be mutated
+  
+  
+```{r}
+#| label: inspect-panelE_AI-data-2
+skimr::skim(panelE_AI)
+```
+
+Furthermore, on the Qual variables panel-E-AI data has : 
+
+- `gender` has 2 levels 
+- `program` has 2 levels
+- `AI_belief` also has 2 levels 
+
+There is NO missing data. We are good to mutate
+
+```{r}
+#| label: mutate-panelE_AI-factors
+
+AI <- panelE_AI |>  mutate(gender = as.factor(gender), program = as.factor(program), AI_belief = as.factor(AI_belief))
+
+glimpse(AI)
+```
+
+
+### 2. Ask
+
+Do design students have greater belief in AI compared to art students? Does it differ between boys and girls?
+
+
+### 3. Choose a mark 
+
+Mosaic chart
+
+
+### 4. Predict 
+ 
+We think Design students are more likely to have a greater belief in AI compared to art students, and  boys are more likely to have a greater belief than girls. 
+
+
+### 5. Make 
+
+```{r}
+ vcd::structable(AI_belief ~ program + gender , data = AI) %>% vcd::mosaic() 
+
+```
+
+```{r}
+mosaic::xchisq.test(AI_belief ~ program, data = AI)
+```
+
+```{r}
+mosaic::xchisq.test(AI_belief ~ program, data = AI)
+mosaic::xchisq.test(AI_belief ~ gender, data = AI)
+```
+
+
+### 6. Say
+
+Design students and boys are more likely to believe in AI, but the real split is within art, where girls are skeptical and boys are almost evenly divided.
+
+
+### 7. Limit
+
+“Belief” means something different to each student. One person might say yes because AI exists and they use it daily; another might say no because they’re thinking about ethics or environmental cost.
+
+
+
+## Allowance: Guys have more pocket money than Gals.
+
+
+### 1. See the table
+
+```{r}
+#| label: inspect-panelE_allowance-data-1
+dplyr::glimpse(panelE_allowance)
+
+```
+
+My PanelE_allowance data has:
+
+  - 60 observations and 02 variables.
+  
+  - `gender`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `allowance`: Quantitative, numeric
+  
+```{r}
+#| label: inspect-panelE_allowance-data-2
+skimr::skim(panelE_allowance)
+```
+
+Furthermore, on the Qual variables panel-E-allowance data has : 
+
+- `gender` has 2 levels: 
+
+And on the Quant variables panel-A data has :
+
+- `allowance` has a mean of 6.225 , sd of 5.25,  median of 5, min of 1, and max of 40
+
+There is NO missing data. We are good to mutate
+
+```{r}
+#| label: mutate-panelE_allowance-factors
+
+allowance <- panelE_allowance |>  mutate(gender = as.factor(gender))
+
+glimpse(allowance)
+```
+
+
+### 2. Ask
+
+Do guys have more pocket money allowance than girls? 
+
+
+### 3. Choose a mark 
+
+Histogram, Box Plot
+
+
+### 4. Predict 
+ 
+Guys are more likely to have greater pocket money allowance than girls.
+
+
+### 5. Make
+
+```{r}
+gf_histogram( ~allowance,fill = ~gender, data = allowance) 
+```
+
+
+
+```{r}
+gf_boxplot( x = ~gender, y = ~allowance, data = allowance)
+
+```
+
+
+### 6. Say
+
+Contrary to our prediction, girls in our sample report equal or slightly higher pocket money allowance than boys, with one girl reporting an unusually high allowance of around 40k.
+
+
+### 7. Limit 
+
+
+
+## MBTI: I am an INFP. 
+
+
+### 1. See the table 
+
+```{r}
+#| label: inspect-panelE_mbti-data-1
+dplyr::glimpse(panelE_mbti)
+
+```
+
+My PanelE_mbti data has:
+
+  - 60 observations and 03 variables.
+  - `department`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `mbti.type`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `social.orientation`: Qualitative, categorical. 
+     Encoded <chr>, to be mutated
+
+```{r}
+#| label: inspect-panelE_mbti-data-2
+skimr::skim(panelE_mbti)
+```
+
+Furthermore, on the Qual variables panel-E-mbti data has : 
+
+- `department` has 2 levels 
+- `mbti.type` has 14 levels
+- `social.orientation` has 2 levels 
+
+There is NO missing data. We are good to mutate
+
+```{r}
+#| label: mutate-panelE_mbti-factors
+
+mbti <- panelE_mbti |>  mutate(department = as.factor(department), mbti.type = as.factor(mbti.type) , social.orientation = as.factor(social.orientation)) 
+
+glimpse(mbti)
+```
+
+
+### 2. Ask 
+
+Does personality type differ between MIT and SMI students?
+
+### 3. Choose a mark 
+
+Mosaic chart 
+
+
+### 4. Predict 
+
+SMI students are more likely to be introverted than MIT students.
+
+
+### 5. Make 
+
+```{r}
+gf_bar( ~mbti.type, fill = ~department, data = mbti) 
+```
+
+
+### 6. Say 
+
+
+### 7. Limit 
+
+
+
+## Relationship: Some peasants make, uh, friends earlier.
+
+
+### 1. See the table 
+
+```{r}
+#| label: inspect-panelE_bfgf-data-1
+dplyr::glimpse(panelE_bfgf)
+```
+
+My PanelE_mbti data has:
+
+  - 60 observations and 03 variables.
+  - `department`: Qualitative, categorical. Encoded <chr>, to be mutated
+  - `relationship_status``: Qualitative, categorical. 
+     Encoded <chr>, to be mutated
+     
+```{r}
+#| label: inspect-panelE_bfgf-data-2
+skimr::skim(panelE_bfgf)
+```
+
+Furthermore, on the Qual variables panel-E-bfgf data has : 
+
+- `deparment` has 2 levels 
+- `relationship_status`` has 2 levels
+ 
+There is NO missing data. We are good to mutate
+
+
+```{r}
+#| label: mutate-panelE_bfgf-factors
+
+bfgf <- panelE_bfgf |>  mutate(department = as.factor(department), relationship_status = as.factor(relationship_status))  
+
+glimpse(bfgf)
+```
+
+
+### 2. Ask 
+
+Does personality type differ between MIT and SMI students?
+
+### 3. Choose a mark 
+
+Mosaic chart 
+
+
+### 4. Predict 
+
+SMI students are more likely to be introverted than MIT students.
+
 
 
 

@@ -34,7 +34,7 @@ font_add_google("Be Vietnam Pro", "Be Vietnam Pro")
 showtext_auto()
 
 # Optional: set DPI for raster devices (adjust if you need high-res PNGs)
-showtext_opts(dpi = 300)
+showtext_opts(dpi = 96)
 
 # Set a site-wide ggplot theme using the loaded fonts
 ggplot2::theme_set(
