@@ -186,6 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#mbti-i-am-an-infp." id="toc-mbti-i-am-an-infp." class="nav-link" data-scroll-target="#mbti-i-am-an-infp.">MBTI: I am an INFP.</a></li>
   <li><a href="#relationship-some-peasants-make-uh-friends-earlier." id="toc-relationship-some-peasants-make-uh-friends-earlier." class="nav-link" data-scroll-target="#relationship-some-peasants-make-uh-friends-earlier.">Relationship: Some peasants make, uh, friends earlier.</a></li>
   <li><a href="#tattoos-do-tattoos-make-people-look-attractive-or-not" id="toc-tattoos-do-tattoos-make-people-look-attractive-or-not" class="nav-link" data-scroll-target="#tattoos-do-tattoos-make-people-look-attractive-or-not">Tattoos: Do tattoos make people look attractive or not?</a></li>
+  <li><a href="#tv-shows-friends-vs-modern-family-vs-house-vsbah" id="toc-tv-shows-friends-vs-modern-family-vs-house-vsbah" class="nav-link" data-scroll-target="#tv-shows-friends-vs-modern-family-vs-house-vsbah">TV Shows: Friends vs Modern Family vs House vs…BAH!!!</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -243,18 +244,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mosaic)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggformula) </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># (NEW!!) for Panel B</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co"># (NEW!!) for clean stat outputs</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>PanelA <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-A.csv"</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>PanelB <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-B.csv"</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>PanelC <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-C.csv"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>panelE_AI <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-AI.csv"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>panelE_tattoo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-tattoo.csv"</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>panelE_allowance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-allowance.csv"</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>panelE_bfgf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-bfgf.csv"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>panelE_mbti <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-mbti.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vcd) <span class="co"># (NEW!!) for Panel B</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom) <span class="co"># (NEW!!) for clean stat outputs</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>PanelA <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-A.csv"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>PanelB <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-B.csv"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>PanelC <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-C.csv"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>panelE_AI <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-AI.csv"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>panelE_tattoo <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-tattoo.csv"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>panelE_allowance <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-allowance.csv"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>panelE_bfgf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-bfgf.csv"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>panelE_mbti <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/panel-E-mbti.csv"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>panelE_tvshows <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"data/panel-E-tvshows.xlsx"</span>, <span class="at">col_types =</span> <span class="fu">c</span>(<span class="st">"numeric"</span>,<span class="st">"date"</span>, <span class="st">"date"</span>, <span class="st">"date"</span>)) <span class="sc">|&gt;</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Found tables train the mark. A campus Free Hunch, if we collect one, is a <strong>made</strong> panel of the same pair type — new people, old grammar. It does not replace A, B, or C.</p>
 </section>
@@ -1527,8 +1533,8 @@ $ gdpPercap &lt;dbl&gt; 974.5803, 5937.0295, 6223.3675, 4797.2313, 12779.3796, 3
 <span id="cb53-59"><a href="#cb53-59" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-60"><a href="#cb53-60" aria-hidden="true" tabindex="-1"></a>hinkley_map</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-d36aa7093fa6e21d8303" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-d36aa7093fa6e21d8303">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.2247079605689,-117.145817921965,-117.1427173458527,-117.2111349640518],"lat":[34.94412761049036,34.93621954324678,34.89112358375753,34.89344061852938]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[34.90374722777231,-117.1622383607778,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG & E : Providing water and cancer and hexavalent chromium to residents since 1952.",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[34.91908190532862,-117.1893768313859,3300,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":0.5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},"groundwater",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[34.9037,34.906,34.91,34.915,34.9191,34.928],[-117.1622,-117.168,-117.175,-117.182,-117.1894,-117.205],[300,450,600,750,900,1200],null,null,{"interactive":true,"className":"","stroke":true,"color":"brown","weight":1,"opacity":0.5,"fill":true,"fillColor":"orange","fillOpacity":0.15},null,null,"Chromium-6 Contamination Plume",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircleMarkers","args":[[34.92896619928256,34.90717899139342,34.9219608916045],[-117.2020329207214,-117.1792589057241,-117.1977268768338],6,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.8},null,null,["Donna Jensen - Children were playing in contaminated water, first family Erin visited","Pete Goya - Hinkley resident affected by Chromium-6","Roberta Walker - Key community member who worked with Erin"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.91908190532862,-117.1893768313859],13,[]],"limits":{"lat":[34.89112358375753,34.94412761049036],"lng":[-117.2247079605689,-117.1427173458527]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-4b72185eed9d15d234e4" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-4b72185eed9d15d234e4">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.2247079605689,-117.145817921965,-117.1427173458527,-117.2111349640518],"lat":[34.94412761049036,34.93621954324678,34.89112358375753,34.89344061852938]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":2,"opacity":0.5,"fill":false,"fillColor":"black","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[34.90374722777231,-117.1622383607778,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG & E : Providing water and cancer and hexavalent chromium to residents since 1952.",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircles","args":[34.91908190532862,-117.1893768313859,3300,null,null,{"interactive":true,"className":"","stroke":true,"color":"black","weight":0.5,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.2},"groundwater",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircles","args":[[34.9037,34.906,34.91,34.915,34.9191,34.928],[-117.1622,-117.168,-117.175,-117.182,-117.1894,-117.205],[300,450,600,750,900,1200],null,null,{"interactive":true,"className":"","stroke":true,"color":"brown","weight":1,"opacity":0.5,"fill":true,"fillColor":"orange","fillOpacity":0.15},null,null,"Chromium-6 Contamination Plume",{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addCircleMarkers","args":[[34.92896619928256,34.90717899139342,34.9219608916045],[-117.2020329207214,-117.1792589057241,-117.1977268768338],6,null,null,{"interactive":true,"className":"","stroke":true,"color":"red","weight":5,"opacity":0.5,"fill":true,"fillColor":"red","fillOpacity":0.8},null,null,["Donna Jensen - Children were playing in contaminated water, first family Erin visited","Pete Goya - Hinkley resident affected by Chromium-6","Roberta Walker - Key community member who worked with Erin"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[34.91908190532862,-117.1893768313859],13,[]],"limits":{"lat":[34.89112358375753,34.94412761049036],"lng":[-117.2247079605689,-117.1427173458527]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -2266,7 +2272,8 @@ $ social.orientation &lt;fct&gt; E, I, I, I, I, I, I, I, I, E, E, E, I, E, I, E,
 <section id="make-5" class="level3">
 <h3 class="anchored" data-anchor-id="make-5">5. Make</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>( <span class="sc">~</span>mbti.type, <span class="at">fill =</span> <span class="sc">~</span>department, <span class="at">data =</span> mbti) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>(<span class="sc">~</span>social.orientation, <span class="at">fill =</span> <span class="sc">~</span>department,</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> mbti, <span class="at">position =</span> <span class="st">"fill"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2275,12 +2282,51 @@ $ social.orientation &lt;fct&gt; E, I, I, I, I, I, I, I, I, E, E, E, I, E, I, E,
 </div>
 </div>
 </div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>( <span class="sc">~</span>mbti.type, <span class="at">fill =</span> <span class="sc">~</span>department, <span class="at">data =</span> mbti) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(social.orientation <span class="sc">~</span> department, <span class="at">data =</span> mbti)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  x
+X-squared = 2.3386, df = 1, p-value = 0.1262
+
+   16       10   
+(12.57)  (13.43) 
+ [0.68]   [0.64] 
+&lt; 0.97&gt;  &lt;-0.94&gt; 
+   
+   13       21   
+(16.43)  (17.57) 
+ [0.52]   [0.49] 
+&lt;-0.85&gt;  &lt; 0.82&gt; 
+   
+key:
+    observed
+    (expected)
+    [contribution to X-squared]
+    &lt;Pearson residual&gt;</code></pre>
+</div>
+</div>
 </section>
 <section id="say-5" class="level3">
 <h3 class="anchored" data-anchor-id="say-5">6. Say</h3>
+<p>SMI students are more likely to be introverted, while MIT students lean towards extroversion, supporting my initial prediction.</p>
+<p>However, the Chi-Square test (p = 0.126) shows that this association is not statistically significant.</p>
 </section>
 <section id="limit-5" class="level3">
 <h3 class="anchored" data-anchor-id="limit-5">7. Limit</h3>
+<p>The MBTI framework has been widely criticised for its lack of scientific validity and reliability, making it more suitable for casual personality exploration.</p>
 </section>
 </section>
 <section id="relationship-some-peasants-make-uh-friends-earlier." class="level2">
@@ -2288,7 +2334,7 @@ $ social.orientation &lt;fct&gt; E, I, I, I, I, I, I, I, I, E, E, E, I, E, I, E,
 <section id="see-the-table-6" class="level3">
 <h3 class="anchored" data-anchor-id="see-the-table-6">1. See the table</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(panelE_bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(panelE_bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 60
 Columns: 3
@@ -2304,7 +2350,7 @@ $ relationship_status &lt;chr&gt; "No", "Yes", "No", "No", "No", "No", "Yes", "Y
 <li>`relationship_status``: Qualitative, categorical. Encoded <chr>, to be mutated</chr></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(panelE_bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(panelE_bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -2449,9 +2495,9 @@ $ relationship_status &lt;chr&gt; "No", "Yes", "No", "No", "No", "No", "Yes", "Y
 </ul>
 <p>There is NO missing data. We are good to mutate</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>bfgf <span class="ot">&lt;-</span> panelE_bfgf <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(<span class="at">department =</span> <span class="fu">as.factor</span>(department), <span class="at">relationship_status =</span> <span class="fu">as.factor</span>(relationship_status))  </span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>bfgf <span class="ot">&lt;-</span> panelE_bfgf <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(<span class="at">department =</span> <span class="fu">as.factor</span>(department), <span class="at">relationship_status =</span> <span class="fu">as.factor</span>(relationship_status))  </span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 60
 Columns: 3
@@ -2476,27 +2522,27 @@ $ relationship_status &lt;fct&gt; No, Yes, No, No, No, No, Yes, Yes, No, Yes, No
 <section id="make-6" class="level3">
 <h3 class="anchored" data-anchor-id="make-6">5. Make</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>( <span class="sc">~</span>department, <span class="at">fill =</span> <span class="sc">~</span>relationship_status, <span class="at">data =</span> bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_bar</span>( <span class="sc">~</span>department, <span class="at">fill =</span> <span class="sc">~</span>relationship_status, <span class="at">data =</span> bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-48-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(relationship_status <span class="sc">~</span> department, <span class="at">data =</span> bfgf) <span class="sc">%&gt;%</span>  vcd<span class="sc">::</span><span class="fu">mosaic</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>vcd<span class="sc">::</span><span class="fu">structable</span>(relationship_status <span class="sc">~</span> department, <span class="at">data =</span> bfgf) <span class="sc">%&gt;%</span>  vcd<span class="sc">::</span><span class="fu">mosaic</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>( relationship_status <span class="sc">~</span>department, <span class="at">data =</span> bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>( relationship_status <span class="sc">~</span>department, <span class="at">data =</span> bfgf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test with Yates' continuity correction
@@ -2525,17 +2571,20 @@ key:
 <section id="say-6" class="level3">
 <h3 class="anchored" data-anchor-id="say-6">6. Say</h3>
 <p>SMI and MIT students are nearly identical in relationship status, but contrary to expectations, SMI students are marginally less likely to be in a relationship than their engineering counterparts.</p>
-<p>The stereotype of the romantic art student may need revision.</p>
+<p>The art student stereotype needs some updating.</p>
 </section>
 <section id="limit-6" class="level3">
 <h3 class="anchored" data-anchor-id="limit-6">7. Limit</h3>
-<p>With p = 1 and X-squared = 0, the one person difference between 13 MIT and 12 SMI students saying yes is no more meaningful than a coin landing heads one extra time.</p>
+<p>With p = 1 and X-squared = 0, there is no statistically significant evidence of an association between department and relationship status.</p>
+<p>The one person difference between 13 MIT and 12 SMI students saying yes is no more meaningful than a coin landing heads one extra time.</p>
 </section>
 </section>
 <section id="tattoos-do-tattoos-make-people-look-attractive-or-not" class="level2">
 <h2 class="anchored" data-anchor-id="tattoos-do-tattoos-make-people-look-attractive-or-not">Tattoos: Do tattoos make people look attractive or not?</h2>
+<section id="see-the-table-7" class="level3">
+<h3 class="anchored" data-anchor-id="see-the-table-7">1. See the table</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(panelE_tattoo)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(panelE_tattoo)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 60
 Columns: 4
@@ -2553,7 +2602,7 @@ $ Opinion      &lt;chr&gt; "yes", "yes", "no", "yes", "no", "yes", "yes", "yes",
 <li><code>Opinion</code>: Qualitative, categorical. Encoded <chr>, to be mutated</chr></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(panelE_tattoo)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(panelE_tattoo)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -2709,9 +2758,9 @@ $ Opinion      &lt;chr&gt; "yes", "yes", "no", "yes", "no", "yes", "yes", "yes",
 </ul>
 <p>There is NO missing data. We are good to mutate</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>tto <span class="ot">&lt;-</span> panelE_tattoo <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(<span class="at">Gender =</span> <span class="fu">as.factor</span>(Gender), <span class="at">Has_tattoos. =</span> <span class="fu">as.factor</span>(Has_tattoos.), <span class="at">Opinion =</span> <span class="fu">as.factor</span>(Opinion))</span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(tto)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>tto <span class="ot">&lt;-</span> panelE_tattoo <span class="sc">|&gt;</span>  <span class="fu">mutate</span>(<span class="at">Gender =</span> <span class="fu">as.factor</span>(Gender), <span class="at">Has_tattoos. =</span> <span class="fu">as.factor</span>(Has_tattoos.), <span class="at">Opinion =</span> <span class="fu">as.factor</span>(Opinion))</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(tto)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 60
 Columns: 4
@@ -2721,6 +2770,7 @@ $ Has_tattoos. &lt;fct&gt; yes, no, yes, no, no, yes, no, yes, no, yes, no, yes,
 $ Opinion      &lt;fct&gt; yes, yes, no, yes, no, yes, yes, yes, no, yes, yes, no, y…</code></pre>
 </div>
 </div>
+</section>
 <section id="ask-7" class="level3">
 <h3 class="anchored" data-anchor-id="ask-7">2. Ask</h3>
 <p>Are tattooed people more likely to find tattoos attractive, and does this differ by gender?</p>
@@ -2736,17 +2786,17 @@ $ Opinion      &lt;fct&gt; yes, yes, no, yes, no, yes, yes, yes, no, yes, yes, n
 <section id="make-7" class="level3">
 <h3 class="anchored" data-anchor-id="make-7">5. Make</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a> vcd<span class="sc">::</span><span class="fu">structable</span>(Opinion <span class="sc">~</span> Has_tattoos. <span class="sc">+</span> Gender , <span class="at">data =</span> tto) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a> vcd<span class="sc">::</span><span class="fu">structable</span>(Opinion <span class="sc">~</span> Has_tattoos. <span class="sc">+</span> Gender , <span class="at">data =</span> tto) <span class="sc">%&gt;%</span> vcd<span class="sc">::</span><span class="fu">mosaic</span>() </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(Opinion <span class="sc">~</span> Gender, <span class="at">data =</span> tto)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(Opinion <span class="sc">~</span> Gender, <span class="at">data =</span> tto)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test with Yates' continuity correction
@@ -2772,7 +2822,7 @@ key:
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(Opinion <span class="sc">~</span> Has_tattoos. , <span class="at">data =</span> tto)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>mosaic<span class="sc">::</span><span class="fu">xchisq.test</span>(Opinion <span class="sc">~</span> Has_tattoos. , <span class="at">data =</span> tto)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test with Yates' continuity correction
@@ -2804,7 +2854,303 @@ key:
 </section>
 <section id="limit-7" class="level3">
 <h3 class="anchored" data-anchor-id="limit-7">7. Limit</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sessionInfo()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Although both Chi-squared tests showed no significant associations, this does not necessarily mean that gender or having tattoos has no influence on attractiveness opinions.</p>
+<p>Also, the tests examine gender and tattoo status separately, so they do not tell us whether the relationship between having tattoos and finding them attractive differs by gender.</p>
+</section>
+</section>
+<section id="tv-shows-friends-vs-modern-family-vs-house-vsbah" class="level2">
+<h2 class="anchored" data-anchor-id="tv-shows-friends-vs-modern-family-vs-house-vsbah">TV Shows: Friends vs Modern Family vs House vs…BAH!!!</h2>
+<section id="see-the-table-8" class="level3">
+<h3 class="anchored" data-anchor-id="see-the-table-8">1. See the table</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(panelE_tvshows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 69
+Columns: 4
+$ students      &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1…
+$ friends       &lt;dttm&gt; 2026-10-07, 2026-10-07, 2026-10-07, NA, 2026-10-10, 202…
+$ house         &lt;dttm&gt; NA, NA, NA, NA, NA, NA, NA, NA, 2026-10-06, 2026-10-08,…
+$ modern_family &lt;dttm&gt; 2026-10-09, NA, 2026-10-08, 2026-10-06, 2026-10-07, 202…</code></pre>
+</div>
+</div>
+<p>My PanelE_tvshows data has:</p>
+<ul>
+<li><p>69 observations and 03 variables.</p></li>
+<li><p><code>friends</code>: Quantitative, continuous. Rating out of 10, NA means not watched/rated</p></li>
+<li><p><code>house</code>: Quantitative, continuous. Rating out of 10, NA means not watched/rated<br>
+</p></li>
+<li><p><code>modern_family</code>: Quantitative, continuous. Rating out of 10, NA means not watched/rated</p></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>tvshows <span class="ot">&lt;-</span> panelE_tvshows <span class="sc">|&gt;</span> </span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">friends =</span> lubridate<span class="sc">::</span><span class="fu">day</span>(friends) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">house =</span> lubridate<span class="sc">::</span><span class="fu">day</span>(house) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>(),</span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">modern_family =</span> lubridate<span class="sc">::</span><span class="fu">day</span>(modern_family) <span class="sc">|&gt;</span> <span class="fu">as.numeric</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pivot_longer</span>(<span class="fu">c</span>(<span class="sc">-</span>students), <span class="at">names_to =</span> <span class="st">"show"</span>, <span class="at">values_to =</span> <span class="st">"scores"</span>)</span>
+<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-9"><a href="#cb103-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(tvshows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 207
+Columns: 3
+$ students &lt;dbl&gt; 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7…
+$ show     &lt;chr&gt; "friends", "house", "modern_family", "friends", "house", "mod…
+$ scores   &lt;dbl&gt; 7, NA, 9, 7, NA, NA, 7, NA, 8, NA, NA, 6, 10, NA, 7, 10, NA, …</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(tvshows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">tvshows</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">207</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">show</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 18%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">students</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">35.17</td>
+<td style="text-align: right;">20.22</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: left;">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">scores</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">0.67</td>
+<td style="text-align: right;">7.43</td>
+<td style="text-align: right;">1.79</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">▁▁▂▇▅</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Furthermore, on the Quant variable panel-E-tvshows data has :</p>
+<ul>
+<li><code>scores</code> has a mean of 7.43 , sd of 1.78, median of 8, min of 2, and max of 10</li>
+</ul>
+</section>
+<section id="ask-8" class="level3">
+<h3 class="anchored" data-anchor-id="ask-8">2. Ask</h3>
+<p>Which show is rated highest on average by students?</p>
+</section>
+<section id="choose-a-mark-8" class="level3">
+<h3 class="anchored" data-anchor-id="choose-a-mark-8">3. Choose a mark</h3>
+<p>Density graph Box Plot</p>
+</section>
+<section id="predict-8" class="level3">
+<h3 class="anchored" data-anchor-id="predict-8">4. Predict</h3>
+<p>Friends will have the highest ratings since it’s the most universally known show, House will have the most variation since it’s more niche. The Ideal Final Result (IFR) would be that modern family has the highest ratings because its just GOATed.</p>
+</section>
+<section id="make-8" class="level3">
+<h3 class="anchored" data-anchor-id="make-8">5. Make</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_density</span>( <span class="sc">~</span>scores, <span class="at">fill =</span> <span class="sc">~</span>show, <span class="at">data =</span> tvshows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 68 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gf_boxplot</span>( <span class="at">x =</span> <span class="sc">~</span>show, <span class="at">y =</span> <span class="sc">~</span>scores, <span class="at">data =</span> tvshows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 68 rows containing non-finite outside the scale range
+(`stat_boxplot()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>tvshows_clean <span class="ot">&lt;-</span> tvshows <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(scores))</span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(scores <span class="sc">~</span> show, <span class="at">data =</span> tvshows_clean) <span class="sc">%&gt;%</span> supernova<span class="sc">::</span><span class="fu">supernova</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Analysis of Variance Table (Type III SS)
+ Model: scores ~ show
+
+                              SS  df     MS     F   PRE     p
+ ----- --------------- | ------- --- ------ ----- ----- -----
+ Model (error reduced) |  48.795   2 24.398 8.436 .1104 .0004
+ Error (from model)    | 393.306 136  2.892                  
+ ----- --------------- | ------- --- ------ ----- ----- -----
+ Total (empty model)   | 442.101 138  3.204                  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(scores <span class="sc">~</span> show, <span class="at">data =</span> tvshows_clean) <span class="sc">%&gt;%</span> supernova<span class="sc">::</span><span class="fu">pairwise</span>(<span class="at">plot =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Tukey's Honestly Significant Differences ────────────────────────────────────</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Model: scores ~ show</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>show</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Levels: 3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Family-wise error-rate: 0.05</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  group_1       group_2   diff pooled_se      q    df  lower upper p_adj
+  &lt;chr&gt;         &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 house         friends -0.674     0.270 -2.495   136 -1.579 0.231 .1855
+2 modern_family friends  0.859     0.231  3.710   136  0.083 1.634 .0261
+3 modern_family house    1.533     0.272  5.637   136  0.621 2.444 .0003</code></pre>
+</div>
+</div>
+</section>
+<section id="say-8" class="level3">
+<h3 class="anchored" data-anchor-id="say-8">6. Say</h3>
+<p>Modern Family was rated the highest overall, IFR achieved, with ratings clustering around 8-9, while House had the most spread with people either loving it or not. The ANOVA confirms these differences are real and not just chance (F = 8.44, p = 0.0004).</p>
+<p>The pairwise comparison further revealed that Modern Family was rated significantly higher than both Friends and House. However, there was no statistically significant difference between Friends and House.</p>
+<p>This suggests that Modern Family was the clear favourite among the students who rated these shows, supporting my IFR.</p>
+</section>
+<section id="limit-8" class="level3">
+<h3 class="anchored" data-anchor-id="limit-8">7. Limit</h3>
+<p>In this dataset, there were a lot missing values NA, since not many people had watched/rated House, in an ideal study, all the people within the sample should have watched all the shows, Friends, House and Modern Family.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sessionInfo()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

@@ -38,6 +38,10 @@ library(skimr)
 library(mosaic)
 library(readr)
 library(ggformula) 
+library(readxl)
+library(janitor)
+library(tidyr)
+library(tidyverse)
 ##
 library(vcd) # (NEW!!) for Panel B
 library(broom) # (NEW!!) for clean stat outputs
@@ -50,11 +54,15 @@ panelE_tattoo <- read.csv(file = "data/panel-E-tattoo.csv")
 panelE_allowance <- read.csv(file = "data/panel-E-allowance.csv")
 panelE_bfgf <- read.csv(file = "data/panel-E-bfgf.csv")
 panelE_mbti <- read.csv(file = "data/panel-E-mbti.csv")
-
+panelE_tvshows <- readxl::read_excel("data/panel-E-tvshows.xlsx", col_types = c("numeric","date", "date", "date")) |> janitor::clean_names()
 
 ```
 
 Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
+
+
+
+
 
 # Panel A — body / measure
 
@@ -285,6 +293,9 @@ Students at every activity level, 0 to 7 days a week, cover nearly the same rang
 This panel can't say anything about fitness or body composition, since weight alone isn't BMI. There is also missing data.
 
 
+
+
+
 # Panel B — category / talk
 
 *helmet_12m × gender, text_while_driving_30d × grade. Hours of TV may be ordinal — argue before you average it.*
@@ -470,6 +481,9 @@ Helmet use is rare among students of both genders.
 This panel shows how often students say they wear a helmet, not why they skip it. 
 
 The chart shows counts, not proportions, so not an exact boys versus girls comparison. 
+
+
+
 
 
 # Panel C — place
@@ -735,6 +749,8 @@ Panel C is missing Russia, USA and DRC.
 
 
 
+
+
 # Panel D — The Hinkley Case
 
 In 1993, **Erin Brokovich** stumbled upon a case that would become one of the largest class action lawsuits in American history.
@@ -911,6 +927,8 @@ hinkley_map
 
 
 ```
+
+
 
 
 
@@ -1151,14 +1169,28 @@ SMI students are more likely to be introverted than MIT students.
 ### 5. Make 
 
 ```{r}
-gf_bar( ~mbti.type, fill = ~department, data = mbti) 
+gf_bar(~social.orientation, fill = ~department,
+       data = mbti, position = "fill")
 ```
 
 
+```{r}
+gf_bar( ~mbti.type, fill = ~department, data = mbti) 
+```
+
+```{r}
+mosaic::xchisq.test(social.orientation ~ department, data = mbti)
+```
+
 ### 6. Say 
 
+SMI students are more likely to be introverted, while MIT students lean towards extroversion, supporting my initial prediction. 
+
+However, the Chi-Square test (p = 0.126) shows that this association is not statistically significant.
 
 ### 7. Limit 
+
+The MBTI framework has been widely criticised for its lack of scientific validity and reliability, making it more suitable for casual personality exploration.
 
 
 
@@ -1237,17 +1269,22 @@ mosaic::xchisq.test( relationship_status ~department, data = bfgf)
 
 SMI and MIT students are nearly identical in relationship status, but contrary to expectations, SMI students are marginally less likely to be in a relationship than their engineering counterparts. 
 
-The stereotype of the romantic art student may need revision.
+The art student stereotype needs some updating. 
 
 ### 7. Limit 
 
-With p = 1 and X-squared = 0, the one person difference between 13 MIT and 12 SMI students saying yes is no more meaningful than a coin landing heads one extra time.
+With p = 1 and X-squared = 0, there is no statistically significant evidence of an association between department and relationship status.
+
+The one person difference between 13 MIT and 12 SMI students saying yes is no more meaningful than a coin landing heads one extra time.
 
 
 
 
 
 ## Tattoos: Do tattoos make people look attractive or not?
+
+
+### 1. See the table
 
 ```{r}
 #| label: inspect-panelE_tattoo-data-1
@@ -1322,13 +1359,103 @@ Neither having tattoos nor being female makes you more likely to find tattoos at
 
 ### 7. Limit 
 
+Although both Chi-squared tests showed no significant associations, this does not necessarily mean that gender or having tattoos has no influence on attractiveness opinions. 
+
+Also, the tests examine gender and tattoo status separately, so they do not tell us whether the relationship between having tattoos and finding them attractive differs by gender.
 
 
 
 
 
+## TV Shows: Friends vs Modern Family vs House vs…BAH!!!
 
 
+### 1. See the table 
+
+```{r}
+#| label: inspect-panelE_tvshows-data-1
+dplyr::glimpse(panelE_tvshows)
+```
+
+My PanelE_tvshows data has:
+
+  - 69 observations and 03 variables.
+  
+  - `friends`: Quantitative, continuous. Rating out of 10, NA means not watched/rated
+  - `house`: Quantitative, continuous. Rating out of 10, NA means not watched/rated  
+  - `modern_family`: Quantitative, continuous. Rating out of 10, NA means not watched/rated
+
+```{r}
+tvshows <- panelE_tvshows |> 
+
+  mutate(friends = lubridate::day(friends) |> as.numeric(),
+         house = lubridate::day(house) |> as.numeric(),
+         modern_family = lubridate::day(modern_family) |> as.numeric()) |> 
+
+pivot_longer(c(-students), names_to = "show", values_to = "scores")
+
+glimpse(tvshows)
+```
+
+```{r}
+#| label: inspect-panelE_tvshows-data-2
+skimr::skim(tvshows)
+```
+
+Furthermore, on the Quant variable panel-E-tvshows data has : 
+
+- `scores` has a mean of 7.43	, sd of 1.78, median of 8, min of 2, and max of 10
+
+
+### 2. Ask 
+
+Which show is rated highest on average by students?
+
+### 3. Choose a mark 
+
+Density graph
+Box Plot
+
+
+### 4. Predict 
+
+Friends will have the highest ratings since it’s the most universally known show, House will have the most variation since it’s more niche. The Ideal Final Result (IFR) would be that modern family has the highest ratings because its just GOATed.  
+
+
+### 5. Make 
+
+```{r}
+gf_density( ~scores, fill = ~show, data = tvshows)
+```
+
+
+```{r}
+gf_boxplot( x = ~show, y = ~scores, data = tvshows)
+```
+
+```{r}
+tvshows_clean <- tvshows |> filter(!is.na(scores))
+
+aov(scores ~ show, data = tvshows_clean) %>% supernova::supernova()
+```
+```{r}
+aov(scores ~ show, data = tvshows_clean) %>% supernova::pairwise(plot = TRUE)
+
+```
+
+
+### 6. Say 
+
+Modern Family was rated the highest overall, IFR achieved, with ratings clustering around 8-9, while House had the most spread with people either loving it or not. The ANOVA confirms these differences are real and not just chance (F = 8.44, p = 0.0004). 
+
+The pairwise comparison further revealed that Modern Family was rated significantly higher than both Friends and House. However, there was no statistically significant difference between Friends and House.
+
+This suggests that Modern Family was the clear favourite among the students who rated these shows, supporting my IFR.
+
+
+### 7. Limit 
+
+In this dataset, there were a lot missing values NA, since not many people had watched/rated House, in an ideal study, all the people within the sample should have watched all the shows, Friends, House and Modern Family. 
 
 
 ```r
